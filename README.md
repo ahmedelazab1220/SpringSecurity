@@ -160,7 +160,7 @@ Communication between client computers and web servers is done by sending HTTP R
 
 ![authentication2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/2fb80b50-bec3-44ab-935e-a810e605998c)
 
-##### oops , get `status : 200 unauthorized` because not vaild and not found in memory authentication.
+##### oops , get `status : 401 unauthorized` because not vaild and not found in memory authentication.
 
 #
 
