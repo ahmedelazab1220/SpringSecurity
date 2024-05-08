@@ -89,7 +89,7 @@ Communication between client computers and web servers is done by sending HTTP R
    
 
 
-# Let's go start with default `Spring Security` application -> (name project : DefaultSecurity).
+## Let's go start with default `Spring Security` application -> (name project : DefaultSecurity).
  
  ##### By default, the Authentication gets enabled for the Application , you can use any web browser or Postman to test. Spring Security by default generate security password , you can see this in terminal when run application and default username is `user`
  
@@ -109,7 +109,7 @@ Communication between client computers and web servers is done by sending HTTP R
  
  You can create a Controller and create html page or RestController like in my application , which will direct API requests to the authentication process (login page) first before accessing any other endpoints.
 
-# Let's go start with in-memory authentication `Spring Security` application -> (name project : InMemorySecurity).
+## Let's go start with in-memory authentication `Spring Security` application -> (name project : InMemorySecurity).
 
 #
 
@@ -160,12 +160,68 @@ Communication between client computers and web servers is done by sending HTTP R
 
 ![authentication2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/2fb80b50-bec3-44ab-935e-a810e605998c)
 
-##### oops , get `status : 401 unauthorized` because not vaild and not found in memory authentication.
+##### oops , get `status : 401 unauthorized` because not vaild (Bad credentials) and not found in memory authentication.
+##### If you use web browser get this page.
+
+![Bad credentials](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/59f6b6a3-bd3f-4844-842e-e59fc88ab345)
 
 #
 
 #### also , you can see headers in postman , it looks as `name:value` as we said before.
 ![headers in postman](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/8e1568e2-aefd-49b9-84a1-3bcd4496e7fd)
  
- 
+## let's go start with in-memory authentication & make configuration for securityFilterChain `Spring Security` -> (name project : InMemorySecurityAndFilters).
+
+#
+
+###### i will talk first about SecurityFilterChain before go in deep dive.
+
+#
+
+# SecurityFilterChain
+
+   ##### The `SecurityFilterChain` is a fundamental concept in Spring Security. It represents a chain of filters that are responsible for processing incoming requests and enforcing security measures within a Spring Security-enabled application. it plays a pivotal role in implementing robust security measures for web applications by enabling modular, customizable, and fine-grained security configuration.
+   
+   #
+   
+   ![Filter Chain](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5ba20676-d68b-4608-9802-1688326e7320)
+    
+- Filter Chain: Spring Security is based on a chain of filters, each responsible for a specific aspect of security,     such   as authentication, authorization, CSRF protection, etc. The SecurityFilterChain manages the order and execution   of these   filters.
+    
+- Multiple Chains: In a Spring Security-enabled application, there can be multiple SecurityFilterChain instances. Each        chain can have its own set of filters tailored to specific URL patterns or security requirements.
+
+- Ordering: The order of filter chains is significant. Spring Security evaluates the chains in the order they are defined     and applies the first chain that matches the request. This allows for fine-grained control over the security configuration   based on URL patterns or other criteria.
+
+- Customization: Developers can customize the SecurityFilterChain by defining their own set of filters or by configuring      existing filters with specific parameters.
+
+  ![Filter Chain And Memory Authentication](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6824eb69-b5c5-4e72-b6a0-8463538d83c1)
+
+- 1. `/api/v1/auth` : anybody(`user1`,`user2`, user3) can access to this endpoint don't needs authentication becuase i make      to permitAll to access it. 
+- 2. `/api/v1/auth/admin` : every one has role `ADMIN` can access to this endpoint like `user2 , user3`.
+- 3. `/api/v1/auth/user` : every one has role `USER` can access to this endpoint like `user1 , user3`.
+- 4. `/api/v1/auth/root` : anybody(`user1`,`user2`, user3) can access to this endpoint but needs to authentication becuase i
+     don't permitAll like this endpoint `/api/v1/auth`.
+- 5. `formLogin(form -> form.permitAll())` this line permitAll user to access to login page if you don't set you get next         page.
+      
+      ![Access denied](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ad6521e9-4521-479e-8628-bf2bd97dad30) 
+
+- 6. `httpBasic(Customizer.withDefaults())` this line i use it because i use postman to test and i need basic authentication      to can access. you can delete it if use any web browser. 
+- 7. `Customizer.withDefaults()` : is a factory method provided by Spring Security to create a default customizer for             configuring `HTTP Basic Authentication`. It's a convenient way to apply commonly used settings without needing to           specify them explicitly.
+- 8. if you login with `user1` that have roles `USER` then try to access this endpoint `/api/v1/auth/admin` you get next         body in postman and by another way in web browser. 
+
+    ![403 Forbidden](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/171352fb-4bd7-462f-8657-3bac8cf735ab)
+
+
+##### If you don't like default security page was created by spring you can make one by html and css instead of and in this line `formLogin(form -> form.permitAll())` replace by `formLogin(form -> form.loginPage("/login").permitAll())`
+
+#
+
+#### if you noticed in all above project i use `GET` not any other action like `post , delete , put` why?.
+
+###### ok to answer this question i talk about `CSRF Attacks` , Cross site request forgery (CSRF) is an attack vector that tricks a web browser into executing an unwanted action in an application to which a user is logged in. CSRF are typically conducted using malicious social engineering, such as an email or link that tricks the victim into sending a forged request to a server. As the unsuspecting user is authenticated by their application at the time of the attack, it’s impossible to distinguish a legitimate request from a forged one, but in my application i will set csrf disbale by `csrf(csrf -> csrf.disable())` if you need to make any actions like `post , put` but this is not always true becuase there other system needs it. so , this decision depends on the system if you need it or not . also you can see this video in youtube `https://www.youtube.com/watch?v=6PHddMkl-yw` to understand it better , it shows how to hack using CSRF and what methods can solve it. 
+
+  ![CSRF Attack](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/06f88106-26e4-4890-97c3-17ea093c7bb6)
+
+
+
 
