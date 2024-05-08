@@ -138,15 +138,15 @@ Communication between client computers and web servers is done by sending HTTP R
         The `Pbkdf2PasswordEncoder` employs the PBKDF2 algorithm, which stands for Password-Based Key Derivation Function 2. This algorithm enhances security through multiple iterations and a configurable salt. It's a better choice than the previous options, but there are more advanced alternatives available.
       
       - BcryptPasswordEncoder:
-        The BcryptPasswordEncoder employs the bcrypt hashing algorithm, which has been in use since 1999. This algorithm is frequently updated to match modern computational advancements. Hashing with BcryptPasswordEncoder demands considerable CPU computations, making it resistant to rapid brute-force attacks. The time taken for hashing increases with the number of configured rounds, enhancing security.
+        The `BcryptPasswordEncoder` employs the bcrypt hashing algorithm, which has been in use since 1999. This algorithm is frequently updated to match modern computational advancements. Hashing with BcryptPasswordEncoder demands considerable CPU computations, making it resistant to rapid brute-force attacks. The time taken for hashing increases with the number of configured rounds, enhancing security.
       
       - ScryptPasswordEncoder:
-        An evolution of the BcryptPasswordEncoder, the ScryptPasswordEncoder introduces additional security parameters: computational power and memory. This algorithm requires memory allocation, providing an added layer of security. Hackers attempting to crack passwords must also invest substantial computational power and memory resources.
+        An evolution of the `BcryptPasswordEncoder`, the `ScryptPasswordEncoder` introduces additional security parameters: computational power and memory. This algorithm requires memory allocation, providing an added layer of security. Hackers attempting to crack passwords must also invest substantial computational power and memory resources.
         
       - Argon2PasswordEncoder 
-        The Argon2PasswordEncoder represents the latest advancement in hashing algorithms. It encompasses three dimensions: computational power, memory, and multiple threads (CPU cores). These dimensions collectively thwart brute-force attacks by significantly increasing the resources needed for each attempt.    
+        The `Argon2PasswordEncoder` represents the latest advancement in hashing algorithms. It encompasses three dimensions: computational power, memory, and multiple threads (CPU cores). These dimensions collectively thwart brute-force attacks by significantly increasing the resources needed for each attempt.    
       
-        In conclusion, when choosing a password encoder in Spring Security, it’s crucial to consider the level of security required for your application. While some encoders, like NoOpPasswordEncoder and StandardPasswordEncoder, are inadequate due to their vulnerabilities, options such as BcryptPasswordEncoder, ScryptPasswordEncoder, and Argon2PasswordEncoder offer strong protection against modern hacking techniques. Carefully assess your application's security needs to select the most appropriate password encoder.
+        In conclusion, when choosing a password encoder in Spring Security, it’s crucial to consider the level of security required for your application. While some encoders, like `NoOpPasswordEncoder` and `StandardPasswordEncoder`, are inadequate due to their vulnerabilities, options such as `BcryptPasswordEncoder`, `ScryptPasswordEncoder`, and `Argon2PasswordEncoder` offer strong protection against modern hacking techniques. Carefully assess your application's security needs to select the most appropriate password encoder.
 
 #### ok now you can use postman or any web browser to test , i use postman.
 
@@ -168,10 +168,4 @@ Communication between client computers and web servers is done by sending HTTP R
 ![headers in postman](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/8e1568e2-aefd-49b9-84a1-3bcd4496e7fd)
  
  
-
- 
- 
-     
-    
-
 
