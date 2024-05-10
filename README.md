@@ -295,7 +295,9 @@ Communication between client computers and web servers is done by sending HTTP R
              is a badge that's usually represent by a subject like `ADMIN` , `MANAGER` , `CLIENT`.
 
            but technically speaking it's only one contract behind the scenes and it's GrantedAuthority in next picture.
+           
            ![GrantedAuthority](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6892b63e-f669-4f6b-9b5d-5f8ab600a193)
+           
            so it doesn't matter if we dicuss about Authority or Roles it's still only one contract behind the scenes.
  
    
