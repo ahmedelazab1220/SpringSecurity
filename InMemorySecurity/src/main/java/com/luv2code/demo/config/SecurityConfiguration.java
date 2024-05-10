@@ -14,21 +14,15 @@ public class SecurityConfiguration {
 
 	@Bean
 	UserDetailsService userDetailsService() {
-		UserDetails user1 = User.builder()
-				           .username("ahmed")
-				           .password(passwordEncoder().encode("123"))
-				           .roles("USER")
-				           .build();
-		
-		UserDetails user2 = User.builder()
-		           .username("john")
-		           .password(passwordEncoder().encode("123"))
-		           .roles("USER")
-		           .build();
-		
-		return new InMemoryUserDetailsManager(user1 , user2);
+		UserDetails user1 = User.builder().username("ahmed").password(passwordEncoder().encode("123")).roles("USER")
+				.build();
+
+		UserDetails user2 = User.builder().username("john").password(passwordEncoder().encode("123")).roles("USER")
+				.build();
+
+		return new InMemoryUserDetailsManager(user1, user2);
 	}
-	
+
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

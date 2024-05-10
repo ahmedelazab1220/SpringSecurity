@@ -43,12 +43,14 @@ public class SecurityConfiguration {
 		UserDetails user2 = User.builder()
 				.username("john")
 				.password(passwordEncoder().encode("123"))
+				.authorities("WRITE")
 				.roles("ADMIN")
 				.build();
 		
 		UserDetails user3 = User.builder()
 				.username("ali")
 				.password(passwordEncoder().encode("123"))
+				.authorities("READ")
 				.roles("ADMIN" , "USER")
 				.build();
 

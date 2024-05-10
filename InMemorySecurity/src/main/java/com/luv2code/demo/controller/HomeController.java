@@ -12,4 +12,5 @@ public class HomeController {
 	public String demo() {
 		return "Hi ADMIN!";
 	}
+
 }

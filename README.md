@@ -2,7 +2,7 @@
 
 Welcome, everyone! In this repository, I aim to cover all essential aspects of Spring Security comprehensively. But before diving into that, let's lay down some foundational concepts.
 
-Let's start by understanding the differences between encoding, encryption, hash functions , and other basics you must know before start , which are crucial for grasping the fundamentals. Shall we explore these concepts in detail? Let's dive in!
+Let's start by understanding the differences between encoding, encryption, hash functions and other basics that you should know before starting, which are essential to understanding the basics. It is not necessary to explore these concepts in detail. Let's start.
 
 # Cryptography.
 ##### Cryptography is a science of cryptography that was used in the past in wars to send messages to each other , so that if they fell into the hands the enemy. he would not be able to interpret or read them. This is the method currently used. There are three important types in the world `encoding` , `encryption` , `hashing`.
@@ -29,46 +29,49 @@ Communication between client computers and web servers is done by sending HTTP R
 
      ![Http Request](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/8080dcb7-2491-451d-8780-8e5fe90e75d6)
      
-    Request Line: An HTTP request starts with a request line, which includes the following:
+      - Request Line: An HTTP request starts with a request line, which includes the following:
      
-     - Method: This indicates the action to be performed on the resource. Common methods include GET (retrieve a resource),    POST (submit data to the server), PUT (update a resource), DELETE (remove a resource), and others.
-     - Request URL (Path): The URL of the resource being requested.
-     - HTTP Version: The version of the HTTP protocol being used.
+           - Method: This indicates the action to be performed on the resource. Common methods include GET (retrieve a        resource),    POST (submit data to the server), PUT (update a resource), DELETE (remove a resource), and         others.
+           - Request URL (Path): The URL of the resource being requested.
+           - HTTP Version: The version of the HTTP protocol being used.
      
-    Request Headers : 
+      - Request Headers : 
     
-     - Following the request line are headers, which provide additional information about the request. This can include        details about the client’s browser, the types of responses that the client will accept, cookies, and more.
+          - Following the request line are headers, which provide additional information about the request. This can include   details about the client’s browser, the types of responses that the client will accept, cookies, and more.
     
-    Blank Line : 
+      - Blank Line : 
     
-     - A blank line indicates the end of the headers section.
+          - A blank line indicates the end of the headers section.
     
-    Request Body : 
+      - Request Body : 
     
-     - Request Body (Optional): Not all requests have a body. Bodies are typically included in POST or PUT requests, where     you’re sending data to the server (like form inputs or file uploads). The body contains the data being sent.
-    ![behind the scene http request](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/94ff6178-7275-469e-b974-97f55374b260)
+          - Request Body (Optional): Not all requests have a body. Bodies are typically included in POST or PUT requests,     where you’re sending data to the server (like form inputs or file uploads). The body contains the data being      sent.
+       ![behind the scene http request](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/94ff6178-7275-469e-b974-97f55374b260)
 - 2. Http response
-   is what a server sends back to the client after receiving and processing an HTTP request. It is a key part of the data   exchange in web communications, essentially being the server’s answer to the client’s request. Here’s a breakdown of      the components of an HTTP response:
+     is what a server sends back to the client after receiving and processing an HTTP request. It is a key part of the data exchange in web communications, essentially being the server’s answer to the client’s request. Here’s a breakdown of
+     the components of an HTTP response:
 
      ![Http Response](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f0dba1f7-60ac-4d6c-8596-e61449a6194b)
 
-     Status Line: This is the first line of the response and includes:
-       
-       - HTTP Version: Indicates the HTTP protocol version used (e.g., HTTP/1.1).
-       - Status Code: A three-digit number that indicates the outcome of the request. Common status codes include 200 (OK, -   request succeeded), 404 (Not Found, the resource can’t be found), 500 (Internal Server Error), etc.
-       - Status Text: A brief, human-readable explanation of the status code (e.g., OK, Not Found, Internal Server Error).
+     - Status Line: This is the first line of the response and includes:
+     
+        - HTTP Version: Indicates the HTTP protocol version used (e.g., HTTP/1.1).
+        - Status Code: A three-digit number that indicates the outcome of the request. Common status codes include 200 (OK, - request succeeded), 404 (Not Found, the resource can’t be found), 500 (Internal Server Error), etc.
+        - Status Text: A brief, human-readable explanation of the status code (e.g., OK, Not Found, Internal Server Error).
     
-     Response Headers: 
-       - These are key-value pairs providing additional information about the response. They can include details such as       the server type, content type, content length, caching policies, set cookies, and other metadata. 
+     - Response Headers: 
+     
+        - These are key-value pairs providing additional information about the response. They can include details such as      the server type, content type, content length, caching policies, set cookies, and other metadata. 
        
-     Blank Line : 
-    
+     - Blank Line : 
+
        - A blank line indicates the end of the headers section.   
      
-     Response Body: 
-       - This part of the response contains the actual data or resource that the client requested. For example, it could be    an HTML file, JSON data, an image, etc. In some cases, particularly when the response indicates an error (like a      404), the body might contain a message explaining the error.
+     - Response Body: 
+     
+       - This part of the response contains the actual data or resource that the client requested. For example, it could be   an HTML file, JSON data, an image, etc. In some cases, particularly when the response indicates an error (like a     404), the body might contain a message explaining the error.
        
-     ![behind the scene http response](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5c480d4b-a65d-4780-9bc9-92df63239629)
+         ![behind the scene http response](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5c480d4b-a65d-4780-9bc9-92df63239629)
 
 # Authentication and Authorization.
 
@@ -81,6 +84,7 @@ Communication between client computers and web servers is done by sending HTTP R
    3. Authorization
        Authorization determines what actions a user is allowed to perform within an application. It establishes rules and permissions for accessing protected resources based on the user’s identity and assigned roles.
 
+#
 
 # Spring Security.
   
@@ -89,9 +93,13 @@ Communication between client computers and web servers is done by sending HTTP R
    
 
 
-## Let's go start with default `Spring Security` application -> (name project : DefaultSecurity).
+## default `Spring Security` application -> (name project : DefaultSecurity).
+
+# Agenda 
+  - **Intro to Spring Security**
+  - **Default Security**
  
- ##### By default, the Authentication gets enabled for the Application , you can use any web browser or Postman to test. Spring Security by default generate security password , you can see this in terminal when run application and default username is `user`
+ ##### By default, the Authentication gets enabled for the Application , you can use any web browser or Postman to test. Spring Security by default generate security password , you can see this in console log when run application and default username is `user`
  
  ![generate password](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d796241f-53a2-4cc4-a74d-c6fb5a5a2235)
   
@@ -108,10 +116,16 @@ Communication between client computers and web servers is done by sending HTTP R
  ![logout page](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/4cb84413-c7ee-4ad5-be5e-018463f5c824)
  
  You can create a Controller and create html page or RestController like in my application , which will direct API requests to the authentication process (login page) first before accessing any other endpoints.
+ 
 
-## Let's go start with in-memory authentication `Spring Security` application -> (name project : InMemorySecurity).
+# 
 
-#
+## in-memory authentication `Spring Security` application -> (name project : InMemorySecurity).
+
+# Agenda 
+   - **UserDetailsService**
+   - **UserDetails**
+   - **PasswordEncoder**
 
 #### when you do configuration by this way , you don't need to write anything in `application.properties` because you create users and save in memory and when you run application password security that appear in previous default security not appear now because make all this in application, make sure clone this repository to understand me better and let's talk about this class.
 
@@ -119,11 +133,22 @@ Communication between client computers and web servers is done by sending HTTP R
 
 
  - 1. UserDetailsService
-      Interface used to load user-specific data during the authentication process.
-      Implementations of UserDetailsService retrieve user details (such as username, password, and authorities(roles)) from a data source (e.g., a database , memory) and create a UserDetails object
+      - Interface used to load user-specific data during the authentication process.
+        Implementations of UserDetailsService retrieve user details (such as username, password, and authorities(roles)) from a data source (e.g., a database , memory) and create a UserDetails object
+      - The loadUserByUsername method is an implementation of the loadUserByUsername method defined in the                    UserDetailsService interface. This method is called by Spring Security when it needs to retrieve user details for     authentication.
+      - When a user attempts to log in, they provide a username (or other unique identifier). The loadUserByUsername method   is responsible for looking up the user in the user repository based on this provided username.
+      - If the user is not found in the database, the method logs an error and throws a UsernameNotFoundException. This       exception is a standard exception in Spring Security and indicates that the requested user was not found.
+     
+        ![UserDetailsService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b09d9e17-4047-486c-9c9c-9ac05efb4d6f)
 
  - 2. UserDetails
-      Represents the principal (user) details, including username, password, and authorities. `Spring Security` uses UserDetails to store information about the authenticated user.
+      - Interface Represents the principal (user) details, including username, password, and authorities. `Spring Security`   uses UserDetails to store information about the authenticated user.
+      - GrantedAuthority Represents an authority granted to a user.
+      - Authorities are typically roles or permissions that define what actions a user can perform.
+      - Implementations include SimpleGrantedAuthority.
+      ![UserDetails](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ea3b7ecb-d6c3-4d10-81b9-6784e71dad93)
+
+
  
 - 3. PasswordEncoder
       Spring Security offers a range of password encoders to secure user passwords effectively. Let’s explore these encoders to understand their strengths and limitations.
@@ -143,11 +168,11 @@ Communication between client computers and web servers is done by sending HTTP R
       - ScryptPasswordEncoder:
         An evolution of the `BcryptPasswordEncoder`, the `ScryptPasswordEncoder` introduces additional security parameters: computational power and memory. This algorithm requires memory allocation, providing an added layer of security. Hackers attempting to crack passwords must also invest substantial computational power and memory resources.
         
-      - Argon2PasswordEncoder 
+      - Argon2PasswordEncoder: 
         The `Argon2PasswordEncoder` represents the latest advancement in hashing algorithms. It encompasses three dimensions: computational power, memory, and multiple threads (CPU cores). These dimensions collectively thwart brute-force attacks by significantly increasing the resources needed for each attempt.    
       
         In conclusion, when choosing a password encoder in Spring Security, it’s crucial to consider the level of security required for your application. While some encoders, like `NoOpPasswordEncoder` and `StandardPasswordEncoder`, are inadequate due to their vulnerabilities, options such as `BcryptPasswordEncoder`, `ScryptPasswordEncoder`, and `Argon2PasswordEncoder` offer strong protection against modern hacking techniques. Carefully assess your application's security needs to select the most appropriate password encoder.
-
+      
 #### ok now you can use postman or any web browser to test , i use postman.
 
 ![authetication1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/29365c55-b0a1-4736-90e1-e40cf5e59522)
@@ -169,50 +194,57 @@ Communication between client computers and web servers is done by sending HTTP R
 
 #### also , you can see headers in postman , it looks as `name:value` as we said before.
 ![headers in postman](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/8e1568e2-aefd-49b9-84a1-3bcd4496e7fd)
+
+# 
  
-## let's go start with in-memory authentication & make configuration for securityFilterChain `Spring Security` -> (name project : InMemorySecurityAndFilters).
+## in-memory authentication & make configuration for securityFilterChain `Spring Security` -> (name project : InMemorySecurityAndFilters).
 
+
+# Agenda 
+  - **SecurityFilterChain**
+  - **access EndPoint by Role**
+  - **FormLogin**
+  - **httpBasic**
+  - **Customizer.withDefaults()**
+  - **CSRF Attack**
+  
 #
 
-###### i will talk first about SecurityFilterChain before go in deep dive.
-
-#
-
-# SecurityFilterChain
-
-   ##### The `SecurityFilterChain` is a fundamental concept in Spring Security. It represents a chain of filters that are responsible for processing incoming requests and enforcing security measures within a Spring Security-enabled application. it plays a pivotal role in implementing robust security measures for web applications by enabling modular, customizable, and fine-grained security configuration.
+   - 1. SecurityFilterChain
+          ##### The `SecurityFilterChain` is a fundamental concept in Spring Security. It represents a chain of filters that are responsible for processing incoming requests and enforcing security measures within a Spring Security-enabled application. it plays a pivotal role in implementing robust security measures for web applications by enabling modular, customizable, and fine-grained security configuration.
    
-   #
+          #
    
-   ![Filter Chain](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5ba20676-d68b-4608-9802-1688326e7320)
+          ![Filter Chain](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5ba20676-d68b-4608-9802-1688326e7320)
     
-- Filter Chain: Spring Security is based on a chain of filters, each responsible for a specific aspect of security,     such   as authentication, authorization, CSRF protection, etc. The SecurityFilterChain manages the order and execution   of these   filters.
+         - Filter Chain: Spring Security is based on a chain of filters, each responsible for a specific aspect of security,   such as authentication, authorization, CSRF protection, etc. The SecurityFilterChain manages the order and         execution of these filters.
     
-- Multiple Chains: In a Spring Security-enabled application, there can be multiple SecurityFilterChain instances. Each        chain can have its own set of filters tailored to specific URL patterns or security requirements.
+         - Multiple Chains: In a Spring Security-enabled application, there can be multiple SecurityFilterChain instances.    Each chain can have its own set of filters tailored to specific URL patterns or security requirements.
 
-- Ordering: The order of filter chains is significant. Spring Security evaluates the chains in the order they are defined     and applies the first chain that matches the request. This allows for fine-grained control over the security configuration   based on URL patterns or other criteria.
+         - Ordering: The order of filter chains is significant. Spring Security evaluates the chains in the order they are    defined and applies the first chain that matches the request. This allows for fine-grained control over the        security   configuration   based on URL patterns or other criteria.
 
-- Customization: Developers can customize the SecurityFilterChain by defining their own set of filters or by configuring      existing filters with specific parameters.
+         - Customization: Developers can customize the SecurityFilterChain by defining their own set of filters or by         configuring existing filters with specific parameters.
 
-  ![Filter Chain And Memory Authentication](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6824eb69-b5c5-4e72-b6a0-8463538d83c1)
+           ![Filter Chain And Memory Authentication](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6824eb69-b5c5-4e72-b6a0-8463538d83c1)
+     
+     - 2. EndPoints:
+          - `/api/v1/auth` : anybody(`user1`,`user2`, user3) can access to this endpoint don't needs authentication            becuase i make to permitAll to access it. 
+          - `/api/v1/auth/admin` : every one has role `ADMIN` can access to this endpoint like `user2 , user3`.
+          - `/api/v1/auth/user` : every one has role `USER` can access to this endpoint like `user1 , user3`.
+          - `/api/v1/auth/root` : anybody(`user1`,`user2`, user3) can access to this endpoint but needs to authentication      becuase i don't permitAll like this endpoint `/api/v1/auth`.
+          - if you login with `user1` that have roles `USER` then try to access this endpoint `/api/v1/auth/admin` you get     next body in postman and by another way in web browser. 
+           
+            ![403 Forbidden](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/171352fb-4bd7-462f-8657-3bac8cf735ab)
 
-- 1. `/api/v1/auth` : anybody(`user1`,`user2`, user3) can access to this endpoint don't needs authentication becuase i make      to permitAll to access it. 
-- 2. `/api/v1/auth/admin` : every one has role `ADMIN` can access to this endpoint like `user2 , user3`.
-- 3. `/api/v1/auth/user` : every one has role `USER` can access to this endpoint like `user1 , user3`.
-- 4. `/api/v1/auth/root` : anybody(`user1`,`user2`, user3) can access to this endpoint but needs to authentication becuase i
-     don't permitAll like this endpoint `/api/v1/auth`.
-- 5. `formLogin(form -> form.permitAll())` this line permitAll user to access to login page if you don't set you get next         page.
-      
-      ![Access denied](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ad6521e9-4521-479e-8628-bf2bd97dad30) 
+     - 3. FormLogin
+          - `formLogin(form -> form.permitAll())` this line permitAll user to access to login page if you don't set you get     next page.
+        
+             ![Access denied](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ad6521e9-4521-479e-8628-bf2bd97dad30) 
+          -  If you don't like default security page was created by spring you can make one by html and css instead of and     in this line `formLogin(form -> form.permitAll())` replace by `formLogin(form ->                                  form.loginPage("/login").permitAll())`
+      - 4. HttpBasic(Customizer.withDefaults()) : 
+           - this line i used to do basic Authentication because i use postman to test and i need basic authentication to     can access. you can delete it   if use any web browser.
+           - `Customizer.withDefaults()` : is a factory method provided by Spring Security to create a default customizer      for configuring `HTTP Basic Authentication`. It's a convenient way to apply commonly used settings without       needing to specify them explicitly.
 
-- 6. `httpBasic(Customizer.withDefaults())` this line i use it because i use postman to test and i need basic authentication      to can access. you can delete it if use any web browser. 
-- 7. `Customizer.withDefaults()` : is a factory method provided by Spring Security to create a default customizer for             configuring `HTTP Basic Authentication`. It's a convenient way to apply commonly used settings without needing to           specify them explicitly.
-- 8. if you login with `user1` that have roles `USER` then try to access this endpoint `/api/v1/auth/admin` you get next         body in postman and by another way in web browser. 
-
-    ![403 Forbidden](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/171352fb-4bd7-462f-8657-3bac8cf735ab)
-
-
-##### If you don't like default security page was created by spring you can make one by html and css instead of and in this line `formLogin(form -> form.permitAll())` replace by `formLogin(form -> form.loginPage("/login").permitAll())`
 
 #
 
@@ -221,6 +253,57 @@ Communication between client computers and web servers is done by sending HTTP R
 ###### ok to answer this question i talk about `CSRF Attacks` , Cross site request forgery (CSRF) is an attack vector that tricks a web browser into executing an unwanted action in an application to which a user is logged in. CSRF are typically conducted using malicious social engineering, such as an email or link that tricks the victim into sending a forged request to a server. As the unsuspecting user is authenticated by their application at the time of the attack, it’s impossible to distinguish a legitimate request from a forged one, but in my application i will set csrf disbale by `csrf(csrf -> csrf.disable())` if you need to make any actions like `post , put` but this is not always true becuase there other system needs it. so , this decision depends on the system if you need it or not . also you can see this video in youtube `https://www.youtube.com/watch?v=6PHddMkl-yw` to understand it better , it shows how to hack using CSRF and what methods can solve it. 
 
   ![CSRF Attack](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/06f88106-26e4-4890-97c3-17ea093c7bb6)
+
+#
+
+## database authentication `Spring Security` -> (name project : DatabaseSecurity).
+
+
+# Agenda 
+  - **MySQL Database**
+  - **Authentication Manager**
+  - **Authentication Provider**
+     - DoaAuthenticationProvider
+     - JwtAuthenticationProvider
+  - **AuthenticationEntryPoint**
+  - **Authority & Roles**
+
+#
+
+   - 1. Authentication Manager (Interface):
+         - Responsible for authenticating a user based on their credentials.
+         - Spring Security uses AuthenticationManager to authenticate the user during the login process.
+         - The default implementation is ProviderManager, which delegates to a list of AuthenticationProvider instances.
+   - 2.  AuthenticationProvider:
+          - Implementation of Authentication manager and can override the authenticate().
+          - Custom authentication logic can be implemented by creating a class that implements the AuthenticationProvider     interface.
+          - Common implementations include DaoAuthenticationProvider (use in this Example) for database-backed                authentication and JwtAuthenticationProvider for JWT-based authentication.
+          - Need to provide UserDetaliService(Load the user from DB and set the UserDetails) and PasswordEncoder(Since        password will be saved in DB after Encoding)for DaoAuthenticationProvider.
+  
+             - 1. DaoAuthenticationProvider:
+                `DaoAuthenticationProvider` is typically used when you have a traditional username-password authentication system where user details are stored in a database.
+             - 2. JwtAuthenticationProvider:
+                `JwtAuthenticationProvider` , on the other hand, is used when you're implementing authentication via JSON Web Tokens (JWT).
+   - 3. AuthenticationEntryPoint:
+         - When throw an exception like `UsernameNotFoundException` not throw because Spring Security work before anything    then can't handle exception by this way , so `AuthenticationEntryPoint` come to fix it and help you to handle      exception.
+         - The `AuthenticationEntryPoint` interface in Spring Security is used to commence the authentication process when a   user requests a secured HTTP resource without providing any credentials.
+         - `HandlerExceptionResolver` is an interface in Spring MVC that allows you to define a strategy for handling          exceptions thrown during the execution of handler methods (controllers) in your application.
+   - 4. Authority & Role
+         - Authority
+             is an action that the user can do in your application `Read` , `Write` , `Delete` , `excute something`. it's usually represent by a verb.
+         - Role
+             is a badge that's usually represent by a subject like `ADMIN` , `MANAGER` , `CLIENT`.
+
+           but technically speaking it's only one contract behind the scenes and it's GrantedAuthority in next picture.
+           ![GrantedAuthority](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6892b63e-f669-4f6b-9b5d-5f8ab600a193)
+           so it doesn't matter if we dicuss about Authority or Roles it's still only one contract behind the scenes.
+ 
+   
+  
+
+
+
+
 
 
 
