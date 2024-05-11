@@ -87,7 +87,11 @@ Communication between client computers and web servers is done by sending HTTP R
 #
 
 # Spring Security.
-  
+
+# Agenda 
+  - **Intro to Spring Security**
+  - **Default Security**
+
    ![Spring Security](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/a749b647-ac8b-47d5-9fa4-9fb26bb145e4) 
    ###### Spring Security is a powerful and widely used framework that provides a wide range of features for securing Java applications. When combined with Spring Boot, it becomes even easier to implement secure applications quickly and efficiently. In this article, we will explore how to get started with Spring Security. you can clone this repository `https://github.com/ahmedelazab1220/SpringSecurity.git` or download zip file to understand me better.
    
@@ -95,9 +99,6 @@ Communication between client computers and web servers is done by sending HTTP R
 
 ## default `Spring Security` application -> (name project : DefaultSecurity).
 
-# Agenda 
-  - **Intro to Spring Security**
-  - **Default Security**
  
  ##### By default, the Authentication gets enabled for the Application , you can use any web browser or Postman to test. Spring Security by default generate security password , you can see this in console log when run application and default username is `user`
  
@@ -129,7 +130,7 @@ Communication between client computers and web servers is done by sending HTTP R
 
 #### when you do configuration by this way , you don't need to write anything in `application.properties` because you create users and save in memory and when you run application password security that appear in previous default security not appear now because make all this in application, make sure clone this repository to understand me better and let's talk about this class.
 
-![Security Configuration](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/2e2baeca-1d03-4e27-94ac-4c17760860a6)
+![Security Configuration1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/2e2baeca-1d03-4e27-94ac-4c17760860a6)
 
 
  - 1. UserDetailsService
@@ -260,13 +261,19 @@ Communication between client computers and web servers is done by sending HTTP R
 
 
 # Agenda 
-  - **MySQL Database**
-  - **Authentication Manager**
-  - **Authentication Provider**
-     - DoaAuthenticationProvider
-     - JwtAuthenticationProvider
-  - **AuthenticationEntryPoint**
+  - **Security Configuration**
+    - **Authentication Manager** 
+       - ***AuthenticationConfiguration***
+    - **Authentication Provider**
+       - ***DoaAuthenticationProvider***
+       - ***JwtAuthenticationProvider***
+    - **AuthenticationEntryPoint**
+  - **RestAdviceController** 
   - **Authority & Roles**
+  - **MySQL Database**
+  - **Custom Implementation UserDetails**
+  - **Custom Implementation UserDetailService**
+  - **EndPoints**
 
 #
 
@@ -274,6 +281,13 @@ Communication between client computers and web servers is done by sending HTTP R
          - Responsible for authenticating a user based on their credentials.
          - Spring Security uses AuthenticationManager to authenticate the user during the login process.
          - The default implementation is ProviderManager, which delegates to a list of AuthenticationProvider instances.
+            - 1. AuthenticationConfiguration:
+                This is provided as an argument to the method. It is presumably an instance of Spring's `AuthenticationConfiguration` class, which is used to configure the `AuthenticationManager`.
+                `config.getAuthenticationManager()`: 
+                This line retrieves the `AuthenticationManager` from the `AuthenticationConfiguration`. The getAuthenticationManager() method is presumably a method provided by the `AuthenticationConfiguration` class to obtain the configured `AuthenticationManager`.   
+   
+           ![AuthenticationManager](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/9af14e7b-e774-4dc5-b9a7-6d5a2bc20306)
+
    - 2.  AuthenticationProvider:
           - Implementation of Authentication manager and can override the authenticate().
           - Custom authentication logic can be implemented by creating a class that implements the AuthenticationProvider     interface.
@@ -284,11 +298,21 @@ Communication between client computers and web servers is done by sending HTTP R
                 `DaoAuthenticationProvider` is typically used when you have a traditional username-password authentication system where user details are stored in a database.
              - 2. JwtAuthenticationProvider:
                 `JwtAuthenticationProvider` , on the other hand, is used when you're implementing authentication via JSON Web Tokens (JWT).
+         
+            ![AuthenticationProvider](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/de4c5c13-8729-4644-b17b-5be648bb8de2)
+
    - 3. AuthenticationEntryPoint:
-         - When throw an exception like `UsernameNotFoundException` not throw because Spring Security work before anything    then can't handle exception by this way , so `AuthenticationEntryPoint` come to fix it and help you to handle      exception.
+         - When throw an exception like `UsernameNotFoundException` not throw because Spring Security work before anything    then can't handle exception by this way , so `AuthenticationEntryPoint` come to fix it and help you to handle      exception or i can say that exceptionHandling in security configuration that help me.
          - The `AuthenticationEntryPoint` interface in Spring Security is used to commence the authentication process when a   user requests a secured HTTP resource without providing any credentials.
          - `HandlerExceptionResolver` is an interface in Spring MVC that allows you to define a strategy for handling          exceptions thrown during the execution of handler methods (controllers) in your application.
-   - 4. Authority & Role
+         
+           ![AuthenticationEntryPoint](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6efb7eff-5673-4cc2-8c93-400dec3e6593)
+   - 4. RestAdviceController:
+        - A `@RestControllerAdvice` class in Spring is used to handle exceptions globally across multiple controllers. It     allows you to centralize exception handling logic and apply it to all controllers in your application.
+        - `@ExceptionHandler` annotation is used to declare methods that handle specific exceptions.
+          The handleException method handles exceptions of type Exception. You can have multiple handler methods for different types of exceptions.
+          ![RestAdviceController](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/668ea928-9705-4c8b-9909-c977ebf41982)
+   - 5. Authority & Role:
          - Authority
              is an action that the user can do in your application `Read` , `Write` , `Delete` , `excute something`. it's usually represent by a verb.
          - Role
@@ -299,7 +323,78 @@ Communication between client computers and web servers is done by sending HTTP R
            ![GrantedAuthority](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6892b63e-f669-4f6b-9b5d-5f8ab600a193)
            
            so it doesn't matter if we dicuss about Authority or Roles it's still only one contract behind the scenes.
- 
+           Okay! To apply the Authority or Roles you can use `hasRole` , `hasAuthority` , `hasAnyRole` and `hasAnyAuthority`
+           in **security configuration**. but there difference between them.
+           
+           - `hasRole`:
+                This expression checks if the current authenticated principal has the specified role. Roles in Spring Security are typically represented as strings prefixed with "ROLE_" by default (although this prefix can be customized).
+           - `hasAuthority`: 
+                This expression checks if the current authenticated principal (user) has the specified authority. Authorities in Spring Security are typically represented as strings, and they can represent fine-grained permissions or privileges.
+           - `hasAnyRole`:
+              is like `hasRole` but can accept more than one role.
+           - `hasAnyAuthority`:
+              is like `hasAuthority` but can accept more than one Authority.
+        
+        Also , you can use `@PreAuthorize` or `@PostAuthorize` on **controllers** to apply roles and authorities but you must put `@EnableMethodSecurity` in to apply this. there difference between them.
+           - `@PreAuthorize`:
+              is used to specify access control rules that are evaluated before the method is invoked, and If the pre-authorization check fails `(i.e., the expression evaluates to false)`, the method is not executed, and an `AccessDeniedException` is thrown.
+           - `@PostAuthorize`:
+              is used to specify access control rules that are evaluated after the method has been invoked and before the result is returned to the caller , and If the post-authorization check fails `(i.e., the expression evaluates to false)`, an `AccessDeniedException` is thrown after the method has been executed, and the result is discarded.
+           
+           **You will see that clearly when we apply it practically.**
+    - 6. MySQL Database:
+         entites : `users`  , `roles` , `authorities`
+         relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-
+         ![MySQL Database](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f4a68c24-e5aa-443a-b54c-2d263a1a1a8a)
+    - 7. Custom Implementation UserDetails:
+         - there are many repository implement this in entity but this is not good because broke the first principle of the   `SOLID   Principle`. so i separate this in `SecurityUser` class.
+         - `isAccountNonExpired` , `isAccountNonLocked` , `isCredentialsNonExpired` and `isEnabled` make all true now. 
+         ![Custom ImplementationUserDetails](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5f95c0be-ef14-4c61-b8a2-6a1445c40d77)
+    
+    - 8. Custom Implementation UserDetailService:
+         
+         - overrid function `loadUserByUsername` i talk about this before.
+           ![Custom UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/1ba604d4-b664-4ee5-ad2d-7169b249c364)
+         
+           ![Custom Implementation UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f9f52278-514b-4ddb-92bf-23b4c3988dd1)
+    
+    - 9.  EndPoints:
+          - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication.
+          - `/api/v2/auth/admin`: need to `ADMIN` Role to access.
+          - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there      are difference between them.
+          - `httpBasic`: is still basic Authentication but i add authenticationEntryPoint to handle authentication             exception
+          - `exceptionHandling(ex -> ex.accessDeniedHandler(this.accessEntry))`: this line to handle access denied exception    i make `CustomAccessDeniedHandler` to handle this you can see in repository.
+             ![Security Configuration2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/83b1e0fc-7398-43ae-bf49-f9f6138b0dc0)
+             
+          - `/api/v2/auth/user`: need to `USER` Role or `ADMIN` Role to access.
+          - `/api/v2/auth/root`: need to `ADMIN` Role and `ADMIN_READ` Authority and `ADMIN_WRITE` Authority to access.  
+          - `/api/v2/auth/subroot`: need to `ADMIN` Role and `ADMIN_READ` Authority or `ADMIN_WRITE` Authority to access.
+             ![PreAuthorize PostAuthorize](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/713ae689-abd4-48c2-aa20-925e75b30d9f)
+          - i use postman to test , i add this users to system.
+             ![register1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/4799f12b-b7a4-42eb-b981-f436b167f92b)
+             ![register2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/73dc407c-d395-4bc5-862c-51103653f5b1)
+             ![register3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d65e2732-42fa-412d-bf6d-cc94a4d6b34c)
+             
+          - now go to test endpoints.
+             ![test1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/c3751638-58f5-4972-9cff-5c0f7ea35cb4)
+             ![test2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/e6314746-645a-4a14-aede-4654b4ba49b3)
+             ![test3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/c72c3f52-a18c-418b-9dd9-212893949570)
+             ![test4](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/9b8101cf-ef48-40e7-9cdf-2b8d741de574)
+             ![test5](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/80fc53ce-a988-490c-aef8-fdb96a0c7e91)
+             ![test6](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6d959018-54aa-45fc-98cb-b179112a0509)
+
+             
+             
+             
+
+#
+
+##### now , you may be asking yourself the question should i use Role or Authority ?
+***it depends on the system , it's not mandatory***          
+
+#
+
+
    
   
 
