@@ -26,35 +26,23 @@ public class SecurityConfiguration {
 			request.requestMatchers("/api/v1/auth/user").hasRole("USER");
 			request.requestMatchers("/api/v1/auth/root").hasAnyRole("ADMIN", "USER");
 			request.anyRequest().authenticated();
-		}).httpBasic(Customizer.withDefaults())
-		  .formLogin(form -> form.permitAll());
+		}).httpBasic(Customizer.withDefaults()).formLogin(form -> form.permitAll());
 
 		return http.build();
 	}
 
 	@Bean
 	UserDetailsService userDetailsService() {
-		UserDetails user1 = User.builder()
-				.username("ahmed")
-				.password(passwordEncoder().encode("123"))
-				.roles("USER")
+		UserDetails user1 = User.builder().username("ahmed").password(passwordEncoder().encode("123")).roles("USER")
 				.build();
 
-		UserDetails user2 = User.builder()
-				.username("john")
-				.password(passwordEncoder().encode("123"))
-				.authorities("WRITE")
-				.roles("ADMIN")
-				.build();
-		
-		UserDetails user3 = User.builder()
-				.username("ali")
-				.password(passwordEncoder().encode("123"))
-				.authorities("READ")
-				.roles("ADMIN" , "USER")
-				.build();
+		UserDetails user2 = User.builder().username("john").password(passwordEncoder().encode("123"))
+				.authorities("WRITE").roles("ADMIN").build();
 
-		return new InMemoryUserDetailsManager(user1, user2 , user3);
+		UserDetails user3 = User.builder().username("ali").password(passwordEncoder().encode("123")).authorities("READ")
+				.roles("ADMIN", "USER").build();
+
+		return new InMemoryUserDetailsManager(user1, user2, user3);
 	}
 
 	@Bean

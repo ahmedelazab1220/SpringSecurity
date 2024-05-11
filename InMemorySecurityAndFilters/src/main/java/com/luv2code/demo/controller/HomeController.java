@@ -13,25 +13,25 @@ public class HomeController {
 	public String admin() {
 		return "Hi ADMIN!";
 	}
-	
+
 	@GetMapping("/user")
 	public String user() {
 		return "Hi user!";
 	}
-	
+
 	@GetMapping("/root")
 	public String root() {
 		return "Hi root!";
 	}
-	
+
 	@GetMapping("")
 	public String demo() {
 		return "Hi EveryBody!";
 	}
-	
+
 	@PostMapping("/action")
 	public String action() {
 		return "post mapping";
 	}
-	
+
 }
