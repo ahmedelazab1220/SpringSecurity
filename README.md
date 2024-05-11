@@ -228,7 +228,7 @@ Communication between client computers and web servers is done by sending HTTP R
 
            ![Filter Chain And Memory Authentication](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6824eb69-b5c5-4e72-b6a0-8463538d83c1)
      
-     - 2. EndPoints:
+   - 2. EndPoints:
           - `/api/v1/auth` : anybody(`user1`,`user2`, user3) can access to this endpoint don't needs authentication            becuase i make to permitAll to access it. 
           - `/api/v1/auth/admin` : every one has role `ADMIN` can access to this endpoint like `user2 , user3`.
           - `/api/v1/auth/user` : every one has role `USER` can access to this endpoint like `user1 , user3`.
@@ -237,14 +237,14 @@ Communication between client computers and web servers is done by sending HTTP R
            
             ![403 Forbidden](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/171352fb-4bd7-462f-8657-3bac8cf735ab)
 
-     - 3. FormLogin
+   - 3. FormLogin
           - `formLogin(form -> form.permitAll())` this line permitAll user to access to login page if you don't set you get     next page.
         
              ![Access denied](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ad6521e9-4521-479e-8628-bf2bd97dad30) 
           -  If you don't like default security page was created by spring you can make one by html and css instead of and     in this line `formLogin(form -> form.permitAll())` replace by `formLogin(form ->                                  form.loginPage("/login").permitAll())`
-      - 4. HttpBasic(Customizer.withDefaults()) : 
-           - this line i used to do basic Authentication because i use postman to test and i need basic authentication to     can access. you can delete it   if use any web browser.
-           - `Customizer.withDefaults()` : is a factory method provided by Spring Security to create a default customizer      for configuring `HTTP Basic Authentication`. It's a convenient way to apply commonly used settings without       needing to specify them explicitly.
+   - 4. HttpBasic(Customizer.withDefaults()) : 
+           - this line i used to do basic Authentication because i use postman to test and i need basic authentication to can access. you can delete it   if use any web browser.
+           - `Customizer.withDefaults()` : is a factory method provided by Spring Security to create a default customizer for configuring `HTTP Basic Authentication`. It's a convenient way to apply commonly used settings without  needing to specify them explicitly.
 
 
 #
@@ -311,6 +311,7 @@ Communication between client computers and web servers is done by sending HTTP R
         - A `@RestControllerAdvice` class in Spring is used to handle exceptions globally across multiple controllers. It     allows you to centralize exception handling logic and apply it to all controllers in your application.
         - `@ExceptionHandler` annotation is used to declare methods that handle specific exceptions.
           The handleException method handles exceptions of type Exception. You can have multiple handler methods for different types of exceptions.
+
           ![RestAdviceController](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/668ea928-9705-4c8b-9909-c977ebf41982)
    - 5. Authority & Role:
          - Authority
@@ -343,17 +344,22 @@ Communication between client computers and web servers is done by sending HTTP R
            
            **You will see that clearly when we apply it practically.**
    - 6. MySQL Database:
+
          entites : `users`  , `roles` , `authorities`
          relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-
+        
          ![MySQL Database](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f4a68c24-e5aa-443a-b54c-2d263a1a1a8a)
    - 7. Custom Implementation UserDetails:
+
          - there are many repository implement this in entity but this is not good because broke the first principle of the   `SOLID   Principle`. so i separate this in `SecurityUser` class.
          - `isAccountNonExpired` , `isAccountNonLocked` , `isCredentialsNonExpired` and `isEnabled` make all true now. 
+
          ![Custom ImplementationUserDetails](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5f95c0be-ef14-4c61-b8a2-6a1445c40d77)
     
    - 8. Custom Implementation UserDetailService:
          
          - overrid function `loadUserByUsername` i talk about this before.
+
            ![Custom UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/1ba604d4-b664-4ee5-ad2d-7169b249c364)
          
            ![Custom Implementation UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f9f52278-514b-4ddb-92bf-23b4c3988dd1)
@@ -361,21 +367,26 @@ Communication between client computers and web servers is done by sending HTTP R
    - 9.  EndPoints:
           - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication.
           - `/api/v2/auth/admin`: need to `ADMIN` Role to access.
-          - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there      are difference between them.
-          - `httpBasic`: is still basic Authentication but i add authenticationEntryPoint to handle authentication             exception
-          - `exceptionHandling(ex -> ex.accessDeniedHandler(this.accessEntry))`: this line to handle access denied exception    i make `CustomAccessDeniedHandler` to handle this you can see in repository.
+          - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there are difference between them.
+          - `httpBasic`: is still basic Authentication but i add authenticationEntryPoint to handle authentication exception
+          - `exceptionHandling(ex -> ex.accessDeniedHandler(this.accessEntry))`: this line to handle access denied exception i make `CustomAccessDeniedHandler` to handle this you can see in repository.
+
              ![Security Configuration2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/83b1e0fc-7398-43ae-bf49-f9f6138b0dc0)
              
           - `/api/v2/auth/user`: need to `USER` Role or `ADMIN` Role to access.
           - `/api/v2/auth/root`: need to `ADMIN` Role and `ADMIN_READ` Authority and `ADMIN_WRITE` Authority to access.  
           - `/api/v2/auth/subroot`: need to `ADMIN` Role and `ADMIN_READ` Authority or `ADMIN_WRITE` Authority to access.
+
              ![PreAuthorize PostAuthorize](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/713ae689-abd4-48c2-aa20-925e75b30d9f)
+
           - i use postman to test , i add this users to system.
+
              ![register1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/4799f12b-b7a4-42eb-b981-f436b167f92b)
              ![register2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/73dc407c-d395-4bc5-862c-51103653f5b1)
              ![register3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d65e2732-42fa-412d-bf6d-cc94a4d6b34c)
              
           - now go to test endpoints.
+
              ![test1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/c3751638-58f5-4972-9cff-5c0f7ea35cb4)
              ![test2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/e6314746-645a-4a14-aede-4654b4ba49b3)
              ![test3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/c72c3f52-a18c-418b-9dd9-212893949570)
