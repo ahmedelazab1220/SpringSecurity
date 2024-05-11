@@ -342,13 +342,21 @@ Communication between client computers and web servers is done by sending HTTP R
            - `@PostAuthorize`:
               is used to specify access control rules that are evaluated after the method has been invoked and before the result is returned to the caller , and If the post-authorization check fails `(i.e., the expression evaluates to false)`, an `AccessDeniedException` is thrown after the method has been executed, and the result is discarded.
            
+        **now , you may be asking yourself the question should i use Role or Authority ?**
+        ***it depends on the system , it's not mandatory***  
+           
            **You will see that clearly when we apply it practically.**
    - 6. MySQL Database:
 
-         entites : `users`  , `roles` , `authorities`
-         relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-
+         - entites : `users`  , `roles` , `authorities`.
+         - relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-.
         
          ![MySQL Database](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f4a68c24-e5aa-443a-b54c-2d263a1a1a8a)
+         
+         - to connect to database open `application.properties` and this 
+         ![application.properties](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d8ac3346-1d77-41e0-9208-4ca89c3d9c04)
+
+
    - 7. Custom Implementation UserDetails:
 
          - there are many repository implement this in entity but this is not good because broke the first principle of the   `SOLID   Principle`. so i separate this in `SecurityUser` class.
@@ -393,7 +401,10 @@ Communication between client computers and web servers is done by sending HTTP R
              ![test4](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/9b8101cf-ef48-40e7-9cdf-2b8d741de574)
              ![test5](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/80fc53ce-a988-490c-aef8-fdb96a0c7e91)
              ![test6](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6d959018-54aa-45fc-98cb-b179112a0509)
-
+   
+   - 10. Flow of application. 
+ 
+            ![Flow of application](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b278ea4c-189b-4572-a57c-7c2974e61803)
              
              
              
