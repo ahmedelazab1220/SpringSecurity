@@ -342,23 +342,23 @@ Communication between client computers and web servers is done by sending HTTP R
               is used to specify access control rules that are evaluated after the method has been invoked and before the result is returned to the caller , and If the post-authorization check fails `(i.e., the expression evaluates to false)`, an `AccessDeniedException` is thrown after the method has been executed, and the result is discarded.
            
            **You will see that clearly when we apply it practically.**
-    - 6. MySQL Database:
+   - 6. MySQL Database:
          entites : `users`  , `roles` , `authorities`
          relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-
          ![MySQL Database](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f4a68c24-e5aa-443a-b54c-2d263a1a1a8a)
-    - 7. Custom Implementation UserDetails:
+   - 7. Custom Implementation UserDetails:
          - there are many repository implement this in entity but this is not good because broke the first principle of the   `SOLID   Principle`. so i separate this in `SecurityUser` class.
          - `isAccountNonExpired` , `isAccountNonLocked` , `isCredentialsNonExpired` and `isEnabled` make all true now. 
          ![Custom ImplementationUserDetails](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5f95c0be-ef14-4c61-b8a2-6a1445c40d77)
     
-    - 8. Custom Implementation UserDetailService:
+   - 8. Custom Implementation UserDetailService:
          
          - overrid function `loadUserByUsername` i talk about this before.
            ![Custom UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/1ba604d4-b664-4ee5-ad2d-7169b249c364)
          
            ![Custom Implementation UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f9f52278-514b-4ddb-92bf-23b4c3988dd1)
     
-    - 9.  EndPoints:
+   - 9.  EndPoints:
           - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication.
           - `/api/v2/auth/admin`: need to `ADMIN` Role to access.
           - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there      are difference between them.
