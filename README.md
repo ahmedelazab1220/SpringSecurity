@@ -136,9 +136,9 @@ Communication between client computers and web servers is done by sending HTTP R
  - 1. UserDetailsService
       - Interface used to load user-specific data during the authentication process.
         Implementations of UserDetailsService retrieve user details (such as username, password, and authorities(roles)) from a data source (e.g., a database , memory) and create a UserDetails object
-      - The loadUserByUsername method is an implementation of the loadUserByUsername method defined in the                    UserDetailsService interface. This method is called by Spring Security when it needs to retrieve user details for     authentication.
-      - When a user attempts to log in, they provide a username (or other unique identifier). The loadUserByUsername method   is responsible for looking up the user in the user repository based on this provided username.
-      - If the user is not found in the database, the method logs an error and throws a UsernameNotFoundException. This       exception is a standard exception in Spring Security and indicates that the requested user was not found.
+      - The loadUserByUsername method is an implementation of the loadUserByUsername method defined in the UserDetailsService interface. This method is called by Spring Security when it needs to retrieve user   details for authentication.
+      - When a user attempts to log in, they provide a username (or other unique identifier). The loadUserByUsername method is responsible for looking up the user in the user repository based on this provided      username.
+      - If the user is not found in the database, the method logs an error and throws a UsernameNotFoundException. This exception is a standard exception in Spring Security and indicates that the requested  user was not found.
      
         ![UserDetailsService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b09d9e17-4047-486c-9c9c-9ac05efb4d6f)
 
@@ -229,22 +229,28 @@ Communication between client computers and web servers is done by sending HTTP R
            ![Filter Chain And Memory Authentication](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6824eb69-b5c5-4e72-b6a0-8463538d83c1)
      
    - 2. EndPoints:
-          - `/api/v1/auth` : anybody(`user1`,`user2`, user3) can access to this endpoint don't needs authentication            becuase i make to permitAll to access it. 
+          - `/api/v1/auth` : anybody(`user1`,`user2`, user3) can access to this endpoint don't needs authentication becuase i make to permitAll to access it. 
           - `/api/v1/auth/admin` : every one has role `ADMIN` can access to this endpoint like `user2 , user3`.
           - `/api/v1/auth/user` : every one has role `USER` can access to this endpoint like `user1 , user3`.
-          - `/api/v1/auth/root` : anybody(`user1`,`user2`, user3) can access to this endpoint but needs to authentication      becuase i don't permitAll like this endpoint `/api/v1/auth`.
-          - if you login with `user1` that have roles `USER` then try to access this endpoint `/api/v1/auth/admin` you get     next body in postman and by another way in web browser. 
+          - `/api/v1/auth/root` : anybody(`user1`,`user2`, user3) can access to this endpoint but needs to authentication becuase i don't permitAll like this endpoint `/api/v1/auth`.
+          - if you login with `user1` that have roles `USER` then try to access this endpoint `/api/v1/auth/admin` you get next body in postman and by another way in web browser. 
            
             ![403 Forbidden](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/171352fb-4bd7-462f-8657-3bac8cf735ab)
 
    - 3. FormLogin
-          - `formLogin(form -> form.permitAll())` this line permitAll user to access to login page if you don't set you get     next page.
+          - `formLogin(form -> form.permitAll())` this line permitAll user to access to login page if you don't set you get next page.
         
              ![Access denied](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ad6521e9-4521-479e-8628-bf2bd97dad30) 
-          -  If you don't like default security page was created by spring you can make one by html and css instead of and     in this line `formLogin(form -> form.permitAll())` replace by `formLogin(form ->                                  form.loginPage("/login").permitAll())`
+          -  If you don't like default security page was created by spring you can make one by html and css instead of and  in this line `formLogin(form -> form.permitAll())` replace by `formLogin(form -> form.loginPage("/login").permitAll())`
    - 4. HttpBasic(Customizer.withDefaults()) : 
-           - this line i used to do basic Authentication because i use postman to test and i need basic authentication to can access. you can delete it   if use any web browser.
+           - this line i used to do basic Authentication because i use postman to test and i need basic authentication to can access. you can delete it if use any web browser.
            - `Customizer.withDefaults()` : is a factory method provided by Spring Security to create a default customizer for configuring `HTTP Basic Authentication`. It's a convenient way to apply commonly used settings without  needing to specify them explicitly.
+           - if you use `httpbasic` and try to delete  `formLogin(form -> form.permitAll())` when go in any web browser and try to access `protected endpoint` next photo appear.
+
+             ![js login page](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b3711498-c3ae-400b-8157-1a7113dae62f) 
+
+             but you can't return to login or logout page. you must restart application and web browser to go again , so i do `httpbasic` and `formLogin(form -> form.permitAll())` to allow this all.
+
 
 
 #
@@ -290,9 +296,9 @@ Communication between client computers and web servers is done by sending HTTP R
 
    - 2.  AuthenticationProvider:
           - Implementation of Authentication manager and can override the authenticate().
-          - Custom authentication logic can be implemented by creating a class that implements the AuthenticationProvider     interface.
-          - Common implementations include DaoAuthenticationProvider (use in this Example) for database-backed                authentication and JwtAuthenticationProvider for JWT-based authentication.
-          - Need to provide UserDetaliService(Load the user from DB and set the UserDetails) and PasswordEncoder(Since        password will be saved in DB after Encoding)for DaoAuthenticationProvider.
+          - Custom authentication logic can be implemented by creating a class that implements the AuthenticationProvider interface.
+          - Common implementations include DaoAuthenticationProvider (use in this Example) for database-backed authentication and JwtAuthenticationProvider for JWT-based authentication.
+          - Need to provide UserDetaliService(Load the user from DB and set the UserDetails) and PasswordEncoder(Since password will be saved in DB after Encoding)for DaoAuthenticationProvider.
   
              - 1. DaoAuthenticationProvider:
                 `DaoAuthenticationProvider` is typically used when you have a traditional username-password authentication system where user details are stored in a database.
@@ -355,11 +361,14 @@ Communication between client computers and web servers is done by sending HTTP R
          
          - to connect to database open `application.properties` and this 
          ![application.properties](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d8ac3346-1d77-41e0-9208-4ca89c3d9c04)
-
+         
+         - if you need to create database automitc replace first line by `spring.datasource.url=jdbc:mysql://localhost:3306/[your_database_name]?createDatabaseIfNotExist=true`
+         - `logging.level.org.springframework.security=DEBUG` : used it to enable logging for `Spring Security`
+         - `spring.jackson.default-property-inclusion=NON_NULL` : This is a Spring Boot property that configures the default inclusion criteria for Jackson when serializing Java objects to JSON. Jackson will exclude all properties that have null values from the JSON output.
 
    - 7. Custom Implementation UserDetails:
 
-         - there are many repository implement this in entity but this is not good because broke the first principle of the   `SOLID   Principle`. so i separate this in `SecurityUser` class.
+         - there are many repository implement this in entity but this is not good because broke the first principle of the `SOLID   Principle`. so i separate this in `SecurityUser` class.
          - `isAccountNonExpired` , `isAccountNonLocked` , `isCredentialsNonExpired` and `isEnabled` make all true now. 
 
          ![Custom ImplementationUserDetails](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5f95c0be-ef14-4c61-b8a2-6a1445c40d77)
@@ -376,7 +385,7 @@ Communication between client computers and web servers is done by sending HTTP R
           - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication.
           - `/api/v2/auth/admin`: need to `ADMIN` Role to access.
           - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there are difference between them.
-          - `httpBasic`: is still basic Authentication but i add authenticationEntryPoint to handle authentication exception
+          - `httpBasic`: is still basic Authentication but i add authenticationEntryPoint to handle authentication exception ,but there is a difference that you may not notice, which is that use any web browser and try to access `protected endpoint` you get login page to make authentication becuase i make this line `formLogin(form -> form.permitAll())` but if remove get always white page not contain anything , so i permit this to show login page in web browser.   
           - `exceptionHandling(ex -> ex.accessDeniedHandler(this.accessEntry))`: this line to handle access denied exception i make `CustomAccessDeniedHandler` to handle this you can see in repository.
 
              ![Security Configuration2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/83b1e0fc-7398-43ae-bf49-f9f6138b0dc0)
@@ -407,12 +416,6 @@ Communication between client computers and web servers is done by sending HTTP R
             ![Flow of application](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b278ea4c-189b-4572-a57c-7c2974e61803)
              
              
-             
-
-#
-
-##### now , you may be asking yourself the question should i use Role or Authority ?
-***it depends on the system , it's not mandatory***          
 
 #
 
