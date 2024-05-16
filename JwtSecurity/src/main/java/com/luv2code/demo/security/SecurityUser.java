@@ -20,11 +20,11 @@ public class SecurityUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
-		if(user.getRoles().isEmpty()) {
+
+		if (user.getRoles().isEmpty()) {
 			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 		}
-		
+
 		return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
 				.collect(Collectors.toList());
 	}

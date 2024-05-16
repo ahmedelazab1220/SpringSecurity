@@ -11,5 +11,5 @@ import com.luv2code.demo.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	Optional<User> findByUsername(String username);
-	
+
 }

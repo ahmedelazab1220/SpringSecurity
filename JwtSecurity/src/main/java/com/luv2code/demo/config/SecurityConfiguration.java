@@ -30,29 +30,27 @@ public class SecurityConfiguration {
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final UserService userService;
-    private final CustomAuthenticationEntry authEntry;
-    
-	
+	private final CustomAuthenticationEntry authEntry;
+
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
 		http.csrf(csrf -> csrf.disable())
-		    .authorizeHttpRequests(request -> 
-	         request.requestMatchers("/api/v2/auth" , "/api/v1/auth/**").permitAll()
-	        .anyRequest().authenticated())
-		    .authenticationProvider(authenticationProvider())
-		    .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-		    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-		    .exceptionHandling(ex -> ex.authenticationEntryPoint(this.authEntry));
-		
+				.authorizeHttpRequests(request -> request.requestMatchers("/api/v2/auth", "/api/v1/auth/**").permitAll()
+						.anyRequest().authenticated())
+				.authenticationProvider(authenticationProvider())
+				.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling(ex -> ex.authenticationEntryPoint(this.authEntry));
+
 		return http.build();
 	}
-	
+
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -60,11 +58,10 @@ public class SecurityConfiguration {
 		provider.setPasswordEncoder(passwordEncoder());
 		return provider;
 	}
-	
+
 	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
+	AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
-	
-	
+
 }

@@ -10,13 +10,13 @@ import io.jsonwebtoken.Claims;
 public interface JwtService {
 
 	String extractUsername(String token);
-	
+
 	Date extractExpiration(String token);
-	
-    <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
-    
-    Boolean validateToken(String token, UserDetails userDetails);
-    
-    String generateToken(String username);
-	
+
+	<T> T extractClaim(String token, Function<Claims, T> claimsResolver);
+
+	Boolean validateToken(String token, UserDetails userDetails);
+
+	String generateToken(String username);
+
 }

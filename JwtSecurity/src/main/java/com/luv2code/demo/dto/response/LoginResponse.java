@@ -17,12 +17,12 @@ import lombok.Setter;
 @Setter
 public class LoginResponse {
 
-    private String username;
-	
+	private String username;
+
 	private String password;
-	
+
 	private Set<Role> roles;
-	
+
 	private String accessToken;
 
 }

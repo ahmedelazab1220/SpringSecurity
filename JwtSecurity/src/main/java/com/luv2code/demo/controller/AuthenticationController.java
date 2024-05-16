@@ -21,16 +21,16 @@ import lombok.AllArgsConstructor;
 public class AuthenticationController {
 
 	private final AuthenticationService userService;
-	
+
 	@PostMapping("/register")
-	public ResponseEntity<User> signUp(@RequestBody RegisterRequest registerRequest){
-		  System.out.println("SignUp User");
-		  return new ResponseEntity<>(userService.signUp(registerRequest) , HttpStatus.ACCEPTED);
+	public ResponseEntity<User> signUp(@RequestBody RegisterRequest registerRequest) {
+		System.out.println("SignUp User");
+		return new ResponseEntity<>(userService.signUp(registerRequest), HttpStatus.ACCEPTED);
 	}
-	
+
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
-		  return new ResponseEntity<>(userService.login(loginRequest) , HttpStatus.ACCEPTED);
+	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+		return new ResponseEntity<>(userService.login(loginRequest), HttpStatus.ACCEPTED);
 	}
 
 }

@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		Optional<User> user = userRepository.findByUsername(username);
@@ -35,5 +35,5 @@ public class UserServiceImpl implements UserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
-	
+
 }

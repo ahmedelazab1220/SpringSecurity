@@ -30,34 +30,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
 
 		String authHeader = request.getHeader("Authorization");
-        String token = null;
-        String username = null;
-        
-        try {
-			if(authHeader != null && authHeader.startsWith("Bearer ")){
-			    token = authHeader.substring(7);
-			    username = jwtService.extractUsername(token);
+		String token = null;
+		String username = null;
+
+		try {
+			if (authHeader != null && authHeader.startsWith("Bearer ")) {
+				token = authHeader.substring(7);
+				username = jwtService.extractUsername(token);
 			}
-			
-			if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-			    
+
+			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
 				UserDetails userDetails = userService.loadUserByUsername(username);
-			    if(jwtService.validateToken(token, userDetails)){
-			        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-			        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-			    }
+				if (jwtService.validateToken(token, userDetails)) {
+					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+							userDetails, null, userDetails.getAuthorities());
+					authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+					SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+				}
 
 			}
-			
+
 			filterChain.doFilter(request, response);
-        } catch (Exception e) {
-        	this.handlerExceptionResolver.resolveException(request, response, null, e);
-        }
-		
+		} catch (Exception e) {
+			this.handlerExceptionResolver.resolveException(request, response, null, e);
+		}
+
 	}
 
 }

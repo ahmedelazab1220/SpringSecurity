@@ -11,6 +11,6 @@ public interface UserService extends UserDetailsService {
 
 	@Override
 	UserDetails loadUserByUsername(String username);
-	
+
 	List<User> findAll();
 }

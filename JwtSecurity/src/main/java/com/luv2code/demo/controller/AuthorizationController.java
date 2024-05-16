@@ -18,9 +18,9 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/v2/auth")
 @AllArgsConstructor
 public class AuthorizationController {
-	
+
 	private final UserService userService;
-	
+
 	@GetMapping("/admin")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String admin() {
@@ -37,9 +37,9 @@ public class AuthorizationController {
 	public String demo() {
 		return "Hi EveryBody!";
 	}
-	
+
 	@GetMapping("/users")
-	public ResponseEntity<List<User>> getAllUsers(){
-	    return new ResponseEntity<>(userService.findAll() , HttpStatus.ACCEPTED);	
+	public ResponseEntity<List<User>> getAllUsers() {
+		return new ResponseEntity<>(userService.findAll(), HttpStatus.ACCEPTED);
 	}
 }

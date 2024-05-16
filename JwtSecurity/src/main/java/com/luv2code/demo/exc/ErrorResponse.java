@@ -3,15 +3,15 @@ package com.luv2code.demo.exc;
 public class ErrorResponse {
 
 	private int status;
-	
+
 	private String title;
 
 	private String message;
 
 	private String detail;
-	
+
 	private String path;
-	
+
 	private long timeStamp;
 
 	public ErrorResponse() {

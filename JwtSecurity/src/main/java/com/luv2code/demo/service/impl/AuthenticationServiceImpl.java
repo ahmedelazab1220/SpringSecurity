@@ -33,11 +33,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		String jwtToken = jwtService.generateToken(loginRequest.getUsername());
-		
+
 		LoginResponse loginResponse = mapper.loginRequestToLoginResponse(loginRequest);
-		
+
 		loginResponse.setAccessToken(jwtToken);
-		
+
 		return loginResponse;
 	}
 
