@@ -262,7 +262,8 @@ Communication between client computers and web servers is done by sending HTTP R
 
              but you can't return to login or logout page. you must restart application and web browser to go again , so i do `httpbasic` and `formLogin(form -> form.permitAll())` to allow this all.
 
-
+    - 5. http.build():
+           - Builds the HttpSecurity configuration and returns the resulting SecurityFilterChain bean.         
 
 #
 
@@ -371,7 +372,7 @@ Communication between client computers and web servers is done by sending HTTP R
          ![MySQL Database1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f4a68c24-e5aa-443a-b54c-2d263a1a1a8a)
          
          - to connect to database open `application.properties` and this 
-         ![application.properties](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d8ac3346-1d77-41e0-9208-4ca89c3d9c04)
+         ![application.properties1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d8ac3346-1d77-41e0-9208-4ca89c3d9c04)
          
          - if you need to create database automatically replace first line by `spring.datasource.url=jdbc:mysql://localhost:3306/[your_database_name]?createDatabaseIfNotExist=true`
          - `logging.level.org.springframework.security=DEBUG` : used it to enable logging for `Spring Security`
@@ -393,7 +394,7 @@ Communication between client computers and web servers is done by sending HTTP R
            ![Custom Implementation UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f9f52278-514b-4ddb-92bf-23b4c3988dd1)
     
    - 9.  EndPoints:
-          - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication.
+          - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication and second endpoint means any endpoint under `/api/v1/auth` permitAll. 
           - `/api/v2/auth/admin`: need to `ADMIN` Role to access.
           - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there are difference between them.
           - `httpBasic`: is still basic Authentication but i add authenticationEntryPoint to handle authentication exception ,but there is a difference that you may not notice, which is that use any web browser and try to access `protected endpoint` you get login page to make authentication becuase i make this line `formLogin(form -> form.permitAll())` but if remove get always white page not contain anything , so i permit this to show login page in web browser.   
@@ -432,13 +433,14 @@ Communication between client computers and web servers is done by sending HTTP R
 
 ### Agenda
    - **JWT**
-   - **JWT Service**
-   - **JWT Authentication Filter**
-   - **Security Context**
    - **Security Configuration**
        - **Session Management**
        - **Authentication Provider**
-       - **Add JWT Authentication Filter**    
+       - **Add JWT Authentication Filter**
+          - ***JwtService***
+          - ***Bearer***
+          - ***SecurityContextHolder***
+          - ***UsernamePasswordAuthenticationToken***
    - **MySQL Database**
    - **Custom Login By RestController**
    - **Exceptions**
@@ -452,6 +454,7 @@ Communication between client computers and web servers is done by sending HTTP R
           ![Structure Before And After](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/e5ae3899-64c8-4276-a94a-a4260d670052) 
         
         - now i want to see you how jwt work behind the scene.
+         
            ![Structure Of Jwt](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5344e5f9-2a96-470e-a023-968aa795f41f)
         
            A JWT consists of three parts separated by periods (.), which are base64url-encoded strings:
@@ -464,11 +467,131 @@ Communication between client computers and web servers is done by sending HTTP R
 
                ![Payload](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/69eb794b-515b-44f6-a9e3-7ec13bb0859e)
            
-             - Signature: To create the signature part, you need to take the encoded header, encoded payload, a secret, and the algorithm specified in the header, then sign that with the secret. The signature is     used to verify that the sender of the JWT is who it says it is and to ensure that the message wasn’t changed along the way.
+             - Signature: To create the signature part, you need to take the encoded header, encoded payload, a secret, and the algorithm specified in the header, then sign that with the secret. The signature is used to verify that the sender of the JWT is who it says it is and to ensure that the message wasn’t changed along the way.
              
                ![Signature](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/aa762532-ed44-4f55-9789-76e9f855b903)
+       
+        - Pros of JWT:
+            - Stateless: Since JWTs carry all the necessary information within themselves, the server doesn’t need to maintain session information. This makes JWTs stateless, which reduces server load and simplifies scalability.
+            - Compact and Efficient: Due to their compact size, JWTs are suitable for transmission over networks and are easily parsed by clients.
+            - Security: JWTs are digitally signed, ensuring data integrity and preventing tampering. Using encryption algorithms enhances the security further.
+            - Cross-Domain Communication: JWTs can be used across different domains or microservices since they don’t rely on cookies or server-side sessions.
+            
+  - 2. Security Configuration:
+       
+       ![Security Configuration2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/007ce092-835f-4259-ab31-3c9511a0c920)
 
+      - 1. Session Management: 
+      
+         sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)): Sets the session creation policy to STATELESS. This means that the application won't create or use HTTP sessions for security.
+      
+      - Authentication Provider: 
+      
+         used to determine any authentication provider used it (DaoAuthenticationProvider or any other implementation) that will be used for authentication. if you don't use custom implementation of AuthenticationProvider you can delete it.
+      
+      - 2. Jwt Authentication Filter:
+         
+         ![JwtAuthenticationFilter](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/da009764-e7c4-4713-a253-1539c7ba495b)
+         
+         - `addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)`: Adds a custom filter (authenticationJwTokenFilter()) before the UsernamePasswordAuthenticationFilter. you can add filter by another ways like `addFilterAt` , `addFilterAfter` and `addFilter`. 
+         `UsernamePasswordAuthenticationFilter`: This filter is responsible for processing JWT tokens and authenticating users. 
+         may be ask me now why use `addFilterBefore`? Using addFilterBefore ensures that your JWT authentication filter is executed before other filters for several reasons:
+            
+           - Security Assurance: JWT authentication is typically one of the primary security measures in an application. By   placing it before other filters, you ensure that authentication is performed before any other security          concerns are addressed. This ensures that unauthorized requests are filtered out early in the process.
 
+           - Efficiency: Placing the JWT authentication filter early in the filter chain can prevent unnecessary processing by other filters for unauthenticated requests. This can improve the efficiency of your application by avoiding unnecessary computation and database access for requests that will ultimately be rejected due to lack of authentication.
+
+           - Ordering: Filters in Spring Security are executed in the order they are added to the filter chain. Using addFilterBefore allows you to explicitly control the order in which filters are executed, ensuring that JWT authentication is prioritized over other filters.
+
+           - Avoiding Interference: Placing the JWT authentication filter before other filters reduces the risk of interference or conflicts with other filters. For example, if CSRF protection is applied before authentication, it might prevent requests with missing or invalid CSRF tokens from reaching the authentication filter, leading to authentication failures for legitimate requests.
+         
+         - 1. JwtService:
+         
+               The `JwtService` class is a component responsible for various operations related to JWT (JSON Web Tokens) in a Spring Boot application. It contains methods for generating, parsing, and validating JWT tokens. Let’s go through each method and explain its purpose:
+                   
+                - `public String extractUsername(String token)`: 
+                    This method takes a JWT token as input and extracts the subject (usually the username) from the token’s claims. It uses the `extractClaim` method to extract the subject claim.
+                - `public Date extractExpiration(String token)`:
+                    This method extracts the expiration date from the JWT token’s claims. It’s used to determine whether the token has expired or not.
+                - `public <T> T extractClaim(String token, Function<Claims, T> claimsResolver)`:
+                    This is a generic method used to extract a specific claim from the JWT token’s claims. It takes a JWT token and a `Function` that specifies how to extract the desired claim (e.g., subject or expiration) and returns the extracted claim.
+                - `private Claims extractAllClaims(String token)`:    
+                    This method parses the JWT token and extracts all of its claims. It uses the `Jwts` builder to create a parser that is configured with the appropriate signing key and then extracts the token’s claims.
+                - `private Boolean isTokenExpired(String token)`:
+                    This method checks whether a JWT token has expired by comparing the token’s expiration date (obtained using `extractExpiration`) to the current date. If the token has expired, it returns `true`; otherwise, it returns `false`.
+                - `public Boolean validateToken(String token, UserDetails userDetails)`:
+                    This method is used to validate a JWT token. It first extracts the username from the token and then checks whether it matches the username of the provided `UserDetails` object. Additionally, it verifies whether the token has expired. If the token is valid, it returns `true`; otherwise, it returns `false`.
+                - `public String GenerateToken(String username)`:
+                    This method is used to generate a JWT token. It takes a username as input, creates a set of claims (e.g., subject, issued-at, expiration), and then builds a JWT token using the claims and the signing key. The resulting token is returned.
+                - `private String buildToken(Map<String, Object> claims, String username)`:
+                    This method is responsible for creating the JWT token. It uses the `Jwts` builder to specify the claims, subject, issue date, expiration date, and the signing key. The token is then signed and compacted to produce the final JWT token, which is returned.
+                - `private Key getSignKey()`:
+                    This method is used to obtain the signing key for JWT token creation and validation. It decodes the `SECRET` key, which is typically a Base64-encoded key, and converts it into a cryptographic key using the `Keys.hmacShaKeyFor` method.
+                - The `SECRET` key appears to be a hard-coded secret key used for signing and verifying JWT tokens. It’s important to ensure the security of this key and to consider more secure methods for managing it, such as using environment variables or a dedicated secret management service in a production environment. you can generate by any tool on web like `https://keygen.io/#fakeLink` or from `JWT Generator`.
+                - `jwtExpiration`: this important to make token expired after long time , even the user is to sign in each time enters the program.
+        
+        -  2. Bearer:
+             A `Bearer Token` is a type of token used in the HTTP Authorization header to authenticate requests. The term "bearer" indicates that the token holder, or bearer, has access rights or permissions granted by the token.
+        
+         - 3. SecurityContextHolder:
+         
+             - Manages the security context, which holds the details of the current authentication and authorization information.
+             - The SecurityContextHolder provides access to the SecurityContext, and the SecurityContext contains the principal (authenticated user) and their granted authorities.
+             - We can set the authentication to Securitycontex at login and after JwtToken authenticated.
+             
+         - 4.  UsernamePasswordAuthenticationToken:
+            The `UsernamePasswordAuthenticationToken` is a class in Spring Security that represents an authentication token for username and password-based authentication. It implements the Authentication interface, which is the core interface representing an authenticated principal once the authentication process is completed.
+            
+    - 4. MySQL Database:
+         
+         - entites : `users`  , `roles` , `authorities`.
+         - relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-.
+         
+          ![MySQL Database2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b9170e88-351d-4b86-9ab5-becbd105af3f)
+          
+          - to connect to database open `application.properties` and this 
+            ![](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ef97bd15-f460-48c7-b1cf-4c14739504a1)
+         
+          - `security.jwt.secret-key`: refer to secret key in `jwtService` class you can change this name. also you can use the same secret-key `51f8bd5450122d34d6f895c98798923f0bcbf19285e92c477f8318272e017cbc` i'm used it. 
+          - `security.jwt.expiration-time`: refer to Expiration time in `jwtService` class you can change this name also and make sure that expriration-time long. you can make `86400000`.
+          
+    - 5. Custom Login By RestController:
+          
+          ![Login Controller](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/13d57be8-8163-4a03-b526-7fd3c378fa23)
+          
+          ![Authentication Login](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/988decbb-f17a-4ed3-8049-37d18a7626bd)
+          
+          - i use dto design pattern apply this, i preferred it and use mapstruct to convert you can see in application to understand me better. 
+          - `authenticationManager.authenticate(...)` is used to authenticate the user's credentials.
+          - generate Token during login.
+    - 6. Exceptions:
+          i use RestAdviceController to handle exception and Authentication Entry point in security but may be notice that i use `try catch` and `HandlerExceptionResolver` in `JwtAuthenticationFilter` why? ok i used it because when try to access to protected endpoint by Invalid Signature `Bearer token` error throw in console before enter in filter before handle by exceptionHandling , then handle by `InsufficientAuthenticationException` but this is false because suppose handle by `SignatureException` and if try to access by expire token handel also by `InsufficientAuthenticationException` to solve it i use handler exception resolver in `JwtAuthenticationFilter`.
+    - 7. EndPoints
+          
+          i use postman to make it , if you want to make it by web browser you must make `custom login page` and permit in security Configuration.
+          
+          note : if user don't enter role i make it `ROLE_USER` by default.
+          
+         ![test1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/4092c1c9-671b-41cd-b462-23f9c8109bb6)
+         ![test2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d317732a-7c14-4650-8d8c-45ed61b5e957)
+         ![test3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ef8221af-68c5-4a6f-a73c-cf66cc30a6ff)
+         ![test4](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/2ceacc09-7f64-48ff-94b5-691e4d7af935)
+         ![test5](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/c590aa02-2a03-4efb-919d-0bbc3d8fa5d8)
+         ![test6](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/9350f4ba-4e9d-4098-a4f5-bf22a9062221)
+         ![test7](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/0cb1db2c-effe-4c63-8dd6-0cc43129b62f)
+         ![test8](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b0119749-e85f-416b-b369-6e1bf6bbdfab)
+         ![test9](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6d30685d-3022-4779-87f4-398647051dc8)
+         ![test10](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/691b472e-e3be-4ce2-b936-05cd928bb01d)
+         ![test11](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/bc9c0759-f18c-4d84-afae-b04439ad997d)
+         ![test12](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/54dd6564-79a0-430d-ba37-c6ea20b26642)
+         ![tesst13](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b051b84f-acfc-494a-83f9-3546d0823f76)
+
+          
+           
+          
+         
+        
+            
 
 
 
