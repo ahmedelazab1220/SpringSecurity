@@ -1,10 +1,25 @@
 # Spring Security 🚀.
 
+## Content : 
+   -  `Chapter 1` : Basic Foundational Concepts
+   -  `Chapter 2` : Default Spring Security
+   -  `Chapter 3` : In-Memory Spring Security
+   -  `Chapter 4` : In-Memory And Filters Spring Security
+   -  `Chapter 5` : Database Spring Security
+   -  `Chapter 6` : Jwt Spring Security
+
 Welcome, everyone! In this repository, I aim to cover all essential aspects of Spring Security comprehensively. But before diving into that, let's lay down some foundational concepts.
 
 Let's start by understanding the differences between encoding, encryption, hash functions and other basics that you should know before starting, which are essential to understanding the basics. It is not necessary to explore these concepts in detail. Let's start.
 
-# Cryptography.
+## Chapter 1.
+   
+### Agenda 
+   - **Cryptography**
+   - **Http Request and Response**
+   - **Authentication and Authorization**
+
+### Cryptography.
 ##### Cryptography is a science of cryptography that was used in the past in wars to send messages to each other , so that if they fell into the hands the enemy. he would not be able to interpret or read them. This is the method currently used. There are three important types in the world `encoding` , `encryption` , `hashing`.
 
 - 1. encoding 
@@ -19,7 +34,7 @@ Let's start by understanding the differences between encoding, encryption, hash 
   Hashing transforms input data into a fixed-size output, typically irreversible, used for data integrity verification and password storage.
   From the output you can't get the input , if someone modify or add anything to it , it changes completely.
 
-# Http Request and Response.
+### Http Request and Response.
 
 Http stands for Hyper Text Transfer Protocol
 Communication between client computers and web servers is done by sending HTTP Requests and receiving HTTP Responses
@@ -31,13 +46,13 @@ Communication between client computers and web servers is done by sending HTTP R
      
       - Request Line: An HTTP request starts with a request line, which includes the following:
      
-           - Method: This indicates the action to be performed on the resource. Common methods include GET (retrieve a        resource),    POST (submit data to the server), PUT (update a resource), DELETE (remove a resource), and         others.
+           - Method: This indicates the action to be performed on the resource. Common methods include GET (retrieve a resource), POST (submit data to the server), PUT (update a resource), DELETE (remove a resource), and others.
            - Request URL (Path): The URL of the resource being requested.
            - HTTP Version: The version of the HTTP protocol being used.
      
       - Request Headers : 
     
-          - Following the request line are headers, which provide additional information about the request. This can include   details about the client’s browser, the types of responses that the client will accept, cookies, and more.
+          - Following the request line are headers, which provide additional information about the request. This can include details about the client’s browser, the types of responses that the client will accept, cookies, and more.
     
       - Blank Line : 
     
@@ -45,7 +60,7 @@ Communication between client computers and web servers is done by sending HTTP R
     
       - Request Body : 
     
-          - Request Body (Optional): Not all requests have a body. Bodies are typically included in POST or PUT requests,     where you’re sending data to the server (like form inputs or file uploads). The body contains the data being      sent.
+          - Request Body (Optional): Not all requests have a body. Bodies are typically included in POST or PUT requests, where you’re sending data to the server (like form inputs or file uploads). The body contains the data being sent.
        ![behind the scene http request](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/94ff6178-7275-469e-b974-97f55374b260)
 - 2. Http response
      is what a server sends back to the client after receiving and processing an HTTP request. It is a key part of the data exchange in web communications, essentially being the server’s answer to the client’s request. Here’s a breakdown of
@@ -61,7 +76,7 @@ Communication between client computers and web servers is done by sending HTTP R
     
      - Response Headers: 
      
-        - These are key-value pairs providing additional information about the response. They can include details such as      the server type, content type, content length, caching policies, set cookies, and other metadata. 
+        - These are key-value pairs providing additional information about the response. They can include details such as the server type, content type, content length, caching policies, set cookies, and other metadata. 
        
      - Blank Line : 
 
@@ -69,11 +84,11 @@ Communication between client computers and web servers is done by sending HTTP R
      
      - Response Body: 
      
-       - This part of the response contains the actual data or resource that the client requested. For example, it could be   an HTML file, JSON data, an image, etc. In some cases, particularly when the response indicates an error (like a     404), the body might contain a message explaining the error.
+       - This part of the response contains the actual data or resource that the client requested. For example, it could be an HTML file, JSON data, an image, etc. In some cases, particularly when the response indicates an error (like a 404), the body might contain a message explaining the error.
        
          ![behind the scene http response](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5c480d4b-a65d-4780-9bc9-92df63239629)
 
-# Authentication and Authorization.
+### Authentication and Authorization.
 
    1. Authentication
         Authentication is the process of verifying the identity of a user accessing a system or application.
@@ -86,21 +101,17 @@ Communication between client computers and web servers is done by sending HTTP R
 
 #
 
-# Spring Security.
+## Chapter 2.
 
-# Agenda 
+### Agenda 
   - **Intro to Spring Security**
   - **Default Security**
 
    ![Spring Security](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/a749b647-ac8b-47d5-9fa4-9fb26bb145e4) 
    ###### Spring Security is a powerful and widely used framework that provides a wide range of features for securing Java applications. When combined with Spring Boot, it becomes even easier to implement secure applications quickly and efficiently. In this article, we will explore how to get started with Spring Security. you can clone this repository `https://github.com/ahmedelazab1220/SpringSecurity.git` or download zip file to understand me better.
    
-
-
-## default `Spring Security` application -> (name project : DefaultSecurity).
-
  
- ##### By default, the Authentication gets enabled for the Application , you can use any web browser or Postman to test. Spring Security by default generate security password , you can see this in console log when run application and default username is `user`
+##### By default, the Authentication gets enabled for the Application , you can use any web browser or Postman to test. Spring Security by default generate security password , you can see this in console log when run application and default username is `user`
  
  ![generate password](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d796241f-53a2-4cc4-a74d-c6fb5a5a2235)
   
@@ -121,9 +132,10 @@ Communication between client computers and web servers is done by sending HTTP R
 
 # 
 
-## in-memory authentication `Spring Security` application -> (name project : InMemorySecurity).
+## Chapter 3.
 
-# Agenda 
+### Agenda 
+   - **In-Memory Authentication**
    - **UserDetailsService**
    - **UserDetails**
    - **PasswordEncoder**
@@ -198,10 +210,9 @@ Communication between client computers and web servers is done by sending HTTP R
 
 # 
  
-## in-memory authentication & make configuration for securityFilterChain `Spring Security` -> (name project : InMemorySecurityAndFilters).
+## Chapter 4.
 
-
-# Agenda 
+### Agenda 
   - **SecurityFilterChain**
   - **access EndPoint by Role**
   - **FormLogin**
@@ -218,13 +229,13 @@ Communication between client computers and web servers is done by sending HTTP R
    
           ![Filter Chain](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5ba20676-d68b-4608-9802-1688326e7320)
     
-         - Filter Chain: Spring Security is based on a chain of filters, each responsible for a specific aspect of security,   such as authentication, authorization, CSRF protection, etc. The SecurityFilterChain manages the order and         execution of these filters.
+         - Filter Chain: Spring Security is based on a chain of filters, each responsible for a specific aspect of security, such as authentication, authorization, CSRF protection, etc. The SecurityFilterChain manages the order and execution of these filters.
     
-         - Multiple Chains: In a Spring Security-enabled application, there can be multiple SecurityFilterChain instances.    Each chain can have its own set of filters tailored to specific URL patterns or security requirements.
+         - Multiple Chains: In a Spring Security-enabled application, there can be multiple SecurityFilterChain instances. Each chain can have its own set of filters tailored to specific URL patterns or security requirements.
 
-         - Ordering: The order of filter chains is significant. Spring Security evaluates the chains in the order they are    defined and applies the first chain that matches the request. This allows for fine-grained control over the        security   configuration   based on URL patterns or other criteria.
+         - Ordering: The order of filter chains is significant. Spring Security evaluates the chains in the order they are defined and applies the first chain that matches the request. This allows for fine-grained control over the security configuration based on URL patterns or other criteria.
 
-         - Customization: Developers can customize the SecurityFilterChain by defining their own set of filters or by         configuring existing filters with specific parameters.
+         - Customization: Developers can customize the SecurityFilterChain by defining their own set of filters or by configuring existing filters with specific parameters.
 
            ![Filter Chain And Memory Authentication](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6824eb69-b5c5-4e72-b6a0-8463538d83c1)
      
@@ -263,10 +274,10 @@ Communication between client computers and web servers is done by sending HTTP R
 
 #
 
-## database authentication `Spring Security` -> (name project : DatabaseSecurity).
+## Chapter 5.
 
 
-# Agenda 
+### Agenda 
   - **Security Configuration**
     - **Authentication Manager** 
        - ***AuthenticationConfiguration***
@@ -308,13 +319,13 @@ Communication between client computers and web servers is done by sending HTTP R
             ![AuthenticationProvider](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/de4c5c13-8729-4644-b17b-5be648bb8de2)
 
    - 3. AuthenticationEntryPoint:
-         - When throw an exception like `UsernameNotFoundException` not throw because Spring Security work before anything    then can't handle exception by this way , so `AuthenticationEntryPoint` come to fix it and help you to handle      exception or i can say that exceptionHandling in security configuration that help me.
-         - The `AuthenticationEntryPoint` interface in Spring Security is used to commence the authentication process when a   user requests a secured HTTP resource without providing any credentials.
-         - `HandlerExceptionResolver` is an interface in Spring MVC that allows you to define a strategy for handling          exceptions thrown during the execution of handler methods (controllers) in your application.
+         - When throw an exception like `UsernameNotFoundException` not throw because Spring Security work before anything then can't handle exception by this way , so `AuthenticationEntryPoint` come to fix it and help you to handle exception or i can say that exceptionHandling in security configuration that help me.
+         - The `AuthenticationEntryPoint` interface in Spring Security is used to commence the authentication process when a user requests a secured HTTP resource without providing any credentials.
+         - `HandlerExceptionResolver` is an interface in Spring MVC that allows you to define a strategy for handling exceptions thrown during the execution of handler methods (controllers) in your application.
          
            ![AuthenticationEntryPoint](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6efb7eff-5673-4cc2-8c93-400dec3e6593)
    - 4. RestAdviceController:
-        - A `@RestControllerAdvice` class in Spring is used to handle exceptions globally across multiple controllers. It     allows you to centralize exception handling logic and apply it to all controllers in your application.
+        - A `@RestControllerAdvice` class in Spring is used to handle exceptions globally across multiple controllers. It allows you to centralize exception handling logic and apply it to all controllers in your application.
         - `@ExceptionHandler` annotation is used to declare methods that handle specific exceptions.
           The handleException method handles exceptions of type Exception. You can have multiple handler methods for different types of exceptions.
 
@@ -357,12 +368,12 @@ Communication between client computers and web servers is done by sending HTTP R
          - entites : `users`  , `roles` , `authorities`.
          - relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-.
         
-         ![MySQL Database](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f4a68c24-e5aa-443a-b54c-2d263a1a1a8a)
+         ![MySQL Database1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f4a68c24-e5aa-443a-b54c-2d263a1a1a8a)
          
          - to connect to database open `application.properties` and this 
          ![application.properties](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d8ac3346-1d77-41e0-9208-4ca89c3d9c04)
          
-         - if you need to create database automitc replace first line by `spring.datasource.url=jdbc:mysql://localhost:3306/[your_database_name]?createDatabaseIfNotExist=true`
+         - if you need to create database automatically replace first line by `spring.datasource.url=jdbc:mysql://localhost:3306/[your_database_name]?createDatabaseIfNotExist=true`
          - `logging.level.org.springframework.security=DEBUG` : used it to enable logging for `Spring Security`
          - `spring.jackson.default-property-inclusion=NON_NULL` : This is a Spring Boot property that configures the default inclusion criteria for Jackson when serializing Java objects to JSON. Jackson will exclude all properties that have null values from the JSON output.
 
@@ -417,11 +428,45 @@ Communication between client computers and web servers is done by sending HTTP R
              
              
 
+## Chapter 6.
+
+### Agenda
+   - **JWT**
+   - **JWT Service**
+   - **JWT Authentication Filter**
+   - **Security Context**
+   - **Security Configuration**
+       - **Session Management**
+       - **Authentication Provider**
+       - **Add JWT Authentication Filter**    
+   - **MySQL Database**
+   - **Custom Login By RestController**
+   - **Exceptions**
+   - **EndPoints**
+
 #
 
+   - 1. JWT:
+        - JSON Web Token, commonly referred to as `JWT`, is an open standard (RFC 7519) for securely transmitting information between parties as a JSON object. The token is digitally signed, ensuring its authenticity and integrity. JWTs are primarily used to authenticate users, authorize access to certain resources, and exchange information securely. you can see structure before use JWT and after.
+        
+          ![Structure Before And After](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/e5ae3899-64c8-4276-a94a-a4260d670052) 
+        
+        - now i want to see you how jwt work behind the scene.
+           ![Structure Of Jwt](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/5344e5f9-2a96-470e-a023-968aa795f41f)
+        
+           A JWT consists of three parts separated by periods (.), which are base64url-encoded strings:
+             
+             - Header: The header typically consists of two parts — the token type (JWT) and the signing algorithm being used, such as HMAC SHA256 or RSA.
 
-   
-  
+               ![Header](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/a2d2f0fa-57f6-4da0-8505-abaa1df9143c) 
+           
+             - Payload: The payload contains the claims, which are statements about the user or other data. Claims can be of three types: registered, public, and private claims.
+
+               ![Payload](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/69eb794b-515b-44f6-a9e3-7ec13bb0859e)
+           
+             - Signature: To create the signature part, you need to take the encoded header, encoded payload, a secret, and the algorithm specified in the header, then sign that with the secret. The signature is     used to verify that the sender of the JWT is who it says it is and to ensure that the message wasn’t changed along the way.
+             
+               ![Signature](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/aa762532-ed44-4f55-9789-76e9f855b903)
 
 
 
