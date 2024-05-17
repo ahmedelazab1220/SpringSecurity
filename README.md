@@ -509,11 +509,11 @@ Communication between client computers and web servers is done by sending HTTP R
       
          sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)): Sets the session creation policy to STATELESS. This means that the application won't create or use HTTP sessions for security.
       
-      - Authentication Provider: 
+      - 2. Authentication Provider: 
       
          used to determine any authentication provider used it (DaoAuthenticationProvider or any other implementation) that will be used for authentication. if you don't use custom implementation of AuthenticationProvider you can delete it.
       
-      - 2. Jwt Authentication Filter:
+      - 3. Jwt Authentication Filter:
          
          ![JwtAuthenticationFilter](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/da009764-e7c4-4713-a253-1539c7ba495b)
          
@@ -558,13 +558,14 @@ Communication between client computers and web servers is done by sending HTTP R
 
              A `Bearer Token` is a type of token used in the HTTP Authorization header `Authorization: Bearer <token>` to authenticate requests. The term "bearer" indicates that the token holder, or bearer, has access rights or permissions granted by the token.
     
-         - 3. SecurityContextHolder:
+        -  3. SecurityContextHolder:
          
              - Manages the security context, which holds the details of the current authentication and authorization information.
              - The SecurityContextHolder provides access to the SecurityContext, and the SecurityContext contains the principal (authenticated user) and their granted authorities.
              - We can set the authentication to Securitycontex at login and after JwtToken authenticated.
              
-         - 4.  UsernamePasswordAuthenticationToken:
+        -  4.  UsernamePasswordAuthenticationToken:
+          
             The `UsernamePasswordAuthenticationToken` is a class in Spring Security that represents an authentication token for username and password-based authentication. It implements the Authentication interface, which is the core interface representing an authenticated principal once the authentication process is completed.
             
     - 4. MySQL Database:
@@ -636,6 +637,7 @@ Communication between client computers and web servers is done by sending HTTP R
         - `Access tokens` with a limited lifespan will eventually expire, removing access to the protected resources needed by your application users. If your application's users need access beyond the lifespan of an access token, they can retrieve a new one using a `refresh token`. That's their single purpose; you can't use a `refresh token` to access protected resources. That's the access token's responsibility. Unlike access tokens, refresh tokens have a longer lifespan.       
         
         - Let’s review how refresh token works in the context of your application by following this diagram:
+         
           ![Flow of Refresh Token](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/1f13e1de-22fe-4831-b6af-230397e04e95)
         
         - Refresh Token 
@@ -644,7 +646,7 @@ Communication between client computers and web servers is done by sending HTTP R
              
              - `private String token`: This field stores some random string (UUID), which is a long-lived token used to obtain new access tokens.
              
-              - `private Instant expiryDate`: This field represents the expiration date and time of the refresh token. It indicates when the refresh token will no longer be valid.
+             - `private Instant expiryDate`: This field represents the expiration date and time of the refresh token. It indicates when the refresh token will no longer be valid.
              
              - `private User user`: This field represents the user associated with the refresh token. It establishes a one-to-one relationship between a user and their refresh token. i use JsonIgnore to avoid overflow during request record `user`.
          
