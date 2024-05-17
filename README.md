@@ -7,6 +7,7 @@
    -  `Chapter 4` : In-Memory And Filters Spring Security
    -  `Chapter 5` : Database Spring Security
    -  `Chapter 6` : Jwt Spring Security
+   -  `Chapter 7` : Jwt And RefreshToken Spring Security
 
 Welcome, everyone! In this repository, I aim to cover all essential aspects of Spring Security comprehensively. But before diving into that, let's lay down some foundational concepts.
 
@@ -292,6 +293,7 @@ Communication between client computers and web servers is done by sending HTTP R
   - **Custom Implementation UserDetails**
   - **Custom Implementation UserDetailService**
   - **EndPoints**
+  - **Flow Application**
 
 #
 
@@ -394,6 +396,7 @@ Communication between client computers and web servers is done by sending HTTP R
            ![Custom Implementation UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f9f52278-514b-4ddb-92bf-23b4c3988dd1)
     
    - 9.  EndPoints:
+   - 
           - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication and second endpoint means any endpoint under `/api/v1/auth` permitAll. 
           - `/api/v2/auth/admin`: need to `ADMIN` Role to access.
           - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there are difference between them.
@@ -427,7 +430,7 @@ Communication between client computers and web servers is done by sending HTTP R
  
             ![Flow of application](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b278ea4c-189b-4572-a57c-7c2974e61803)
              
-             
+#             
 
 ## Chapter 6.
 
@@ -445,10 +448,12 @@ Communication between client computers and web servers is done by sending HTTP R
    - **Custom Login By RestController**
    - **Exceptions**
    - **EndPoints**
+   - **Flow Application**
 
 #
 
    - 1. JWT:
+    
         - JSON Web Token, commonly referred to as `JWT`, is an open standard (RFC 7519) for securely transmitting information between parties as a JSON object. The token is digitally signed, ensuring its authenticity and integrity. JWTs are primarily used to authenticate users, authorize access to certain resources, and exchange information securely. you can see structure before use JWT and after.
         
           ![Structure Before And After](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/e5ae3899-64c8-4276-a94a-a4260d670052) 
@@ -476,7 +481,23 @@ Communication between client computers and web servers is done by sending HTTP R
             - Compact and Efficient: Due to their compact size, JWTs are suitable for transmission over networks and are easily parsed by clients.
             - Security: JWTs are digitally signed, ensuring data integrity and preventing tampering. Using encryption algorithms enhances the security further.
             - Cross-Domain Communication: JWTs can be used across different domains or microservices since they don’t rely on cookies or server-side sessions.
-            
+        
+        - why you would want to use jwt?
+            Let's take a look at a very simple example of one of the most common use cases of jwt here. We have two different servers. We have a bank that owns a server that runs all of their banking applications their banking website all the bank information. You could think of but they also own a separate server and this takes care of all of their retirement plans. They allow people to invest and do retirement plans on a completely separate rev application, but they want their users that log into the bank to also build to the automatically logged into the retirement account so when they switch from the bank to the retirement server. They don't want the user to have to re-log back in especially if they make this transition very seamless to the user so it looks like they're on the same application this is really common in a lot of larger scale Industries and applications and companies, so what happens is the client makes a request here to the bank. They say okay. I want some bank information bank information blah blah. They do all their banking stuff and then finally they get to the point where they actually want to access the retirement information and if you have a normal section based server what happens is your section is stored here inside of the bank and not inside of the retirement server so what happens is your user needs to log back in because they need to build their session stored on the retirement server because the session ID from the client is not found in the retirement server but when using jwt if you share the same secret key between both your bank and your retirement server then all you need to do is send the same jwt from the client to both of them and you'll be authenticated both times without having to read log back in. I know this is a little bit confusing to wrap your head around at first but essentially we're storing the user information on the quiet while in the old cookie session version we store it on the server and since we have two separate servers. We need to have the information stored on both of them, but that's not very easy to do or very possible, so I usually happens. Is you have to store it on one place and then the user has to re log in when they go to the other place but with jwt since the user information is stored in that token on the client. It doesn't matter if they access the bank server the retirement server or any other server that this bank owns. There's still going to be logged in because they have the same exact token and all the servers can recognize that token as long as they have that same secret key on the server another time that this is really useful same kind of example of multiple servers is let's say for example. We had two had two bank servers. The bank was very large and they needed two different servers to build a handle all of the users that were coming to the server and they have some form of load balancer out in front that distributed traffic to the different servers let's say that your client was accessing server a for a while and then this server it got really busy so it moved that client over to server B over here their session is no longer stored on server B it's only on server a so the user has to real aughh back in when this happens and with Jwt you don't have to worry about that because like I mentioned earlier the user stored on the client that's really the important thing about Jwt is the user is stored on the client so no matter how many different servers you have no matter how many different applications load balancers or anything that you have it doesn't matter if the user can always authenticate with any of those servers as long as you have the same secret key between them another instance where this really useful is just you have a lot of really small services such as micro services where you may have an API you may have an actual web server maybe even something else you can use that same jwt token from the client to authenticate with any of those different microservices all across your different architecture.
+        
+        - there are many type of tokens , In this repository i talk about access token and refresh token:      
+             - `access token`: 
+                  - you control access to your application's protected resources by using access tokens. Access tokens are the credentials representing the authorization given to an application. They contain the granted permissions in the form of scopes with a specific duration.
+                  - In most cases, an access token should be short-lived, so your application reduces the time window risk of providing access to restricted resources when an access token is compromised.
+                  In the scenario of an expiring access token, your application has two alternatives:
+                      - Ask the users of your application to re-authenticate each time an access token expires.
+                      - The authorization server automatically issues a new access token once it expires.
+                  Depending on your application’s needs - both options are valid. For example, you may ask your application users to re-authenticate each time a token expires for sensitive applications when the risk of damage is high if an access token is compromised. Using such an approach comes with a significant downside as this means you can't use it for applications that need offline access to protected resources; the end-user needs to be involved each time. 
+                  - In this chapter i will focus on first way , Let’s review how access token works in the context of your application by following this diagram:.
+                      
+                     ![Flow of access token](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/4f81f133-6f4e-4eff-8ba2-323d8a704969)
+
+  
   - 2. Security Configuration:
        
        ![Security Configuration2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/007ce092-835f-4259-ab31-3c9511a0c920)
@@ -531,8 +552,8 @@ Communication between client computers and web servers is done by sending HTTP R
                 - `jwtExpiration`: this important to make token expired after long time , even the user is to sign in each time enters the program.
         
         -  2. Bearer:
-             A `Bearer Token` is a type of token used in the HTTP Authorization header to authenticate requests. The term "bearer" indicates that the token holder, or bearer, has access rights or permissions granted by the token.
-        
+             A `Bearer Token` is a type of token used in the HTTP Authorization header `Authorization: Bearer <token>` to authenticate requests. The term "bearer" indicates that the token holder, or bearer, has access rights or permissions granted by the token.
+    
          - 3. SecurityContextHolder:
          
              - Manages the security context, which holds the details of the current authentication and authorization information.
@@ -547,7 +568,7 @@ Communication between client computers and web servers is done by sending HTTP R
          - entites : `users`  , `roles` , `authorities`.
          - relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-.
          
-          ![MySQL Database2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b9170e88-351d-4b86-9ab5-becbd105af3f)
+            ![MySQL Database2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b9170e88-351d-4b86-9ab5-becbd105af3f)
           
           - to connect to database open `application.properties` and this 
             ![](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ef97bd15-f460-48c7-b1cf-4c14739504a1)
@@ -564,8 +585,11 @@ Communication between client computers and web servers is done by sending HTTP R
           - i use dto design pattern apply this, i preferred it and use mapstruct to convert you can see in application to understand me better. 
           - `authenticationManager.authenticate(...)` is used to authenticate the user's credentials.
           - generate Token during login.
+    
     - 6. Exceptions:
+    
           i use RestAdviceController to handle exception and Authentication Entry point in security but may be notice that i use `try catch` and `HandlerExceptionResolver` in `JwtAuthenticationFilter` why? ok i used it because when try to access to protected endpoint by Invalid Signature `Bearer token` error throw in console before enter in filter before handle by exceptionHandling , then handle by `InsufficientAuthenticationException` but this is false because suppose handle by `SignatureException` and if try to access by expire token handel also by `InsufficientAuthenticationException` to solve it i use handler exception resolver in `JwtAuthenticationFilter`.
+    
     - 7. EndPoints
           
           i use postman to make it , if you want to make it by web browser you must make `custom login page` and permit in security Configuration.
@@ -585,16 +609,83 @@ Communication between client computers and web servers is done by sending HTTP R
          ![test11](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/bc9c0759-f18c-4d84-afae-b04439ad997d)
          ![test12](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/54dd6564-79a0-430d-ba37-c6ea20b26642)
          ![tesst13](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b051b84f-acfc-494a-83f9-3546d0823f76)
-
+    
+    - 8. Flow Application
           
-           
+         ![Flow Application2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/283fb2ad-261e-42d7-b87c-9c4565da5b3e) 
           
-         
+#         
         
-            
+## Chapter 7            
 
+### Agenda
+   - **Refresh Token**
+   - **MySQL Database**
+   - **Exceptions**
+   - **EndPoints**
+   - **Flow Application**
+   
+#
+   
+   - 1. Refresh Token:
+        - `Access tokens` with a limited lifespan will eventually expire, removing access to the protected resources needed by your application users. If your application's users need access beyond the lifespan of an access token, they can retrieve a new one using a `refresh token`. That's their single purpose; you can't use a `refresh token` to access protected resources. That's the access token's responsibility. Unlike access tokens, refresh tokens have a longer lifespan.       
+        
+        - Let’s review how refresh token works in the context of your application by following this diagram:
+          ![Flow of Refresh Token](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/1f13e1de-22fe-4831-b6af-230397e04e95)
+        
+        - Refresh Token 
+          
+             ![Refresh Token](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/976a8484-a001-44a0-9227-812d814f9762)
+             
+             - `private String token`: This field stores some random string (UUID), which is a long-lived token used to obtain new access tokens.
+             
+              - `private Instant expiryDate`: This field represents the expiration date and time of the refresh token. It indicates when the refresh token will no longer be valid.
+             
+             - `private User user`: This field represents the user associated with the refresh token. It establishes a one-to-one relationship between a user and their refresh token. i use JsonIgnore to avoid overflow during request record `user`.
+         - Refresh Token Service
+           ![Refresh Token Service](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/1f49859c-f55d-4780-a011-b9eb893325a9)
+          
+           - createRefreshToken : 
+              This method is used to create a new refresh token for a user. It takes the username as input, fetches the associated user information from the UserRepository, generates a random token using UUID.randomUUID().toString(), and sets the expiration date to 10 minutes (600,000 milliseconds) from the current time. It then builds a RefreshToken object and saves it to the database using the refreshTokenRepository.save(refreshToken) method. The newly created refresh token is returned.   
+           
+           - findByToken :
+              This method is used to find a refresh token by its token value. It takes a token as input and queries the database using the refreshTokenRepository.findByToken(token) method. The result is returned as an Optional to handle the possibility of a token not being found.   
+          
+           - verifyExpiration : 
+              This method checks if a refresh token has expired. It takes a token as input and compares its expiration date with the current time (obtained through Instant.now()). If the expiration date is in the past, it means the token has expired.
+              If the token is expired, it is deleted from the database using refreshTokenRepository.delete(token), and a RuntimeException is thrown to indicate that the refresh token has expired.If the token is still valid, it is returned as-is.       
+ 
+ 
 
+   - 2. MySQL Database:
+        ![MySQL Database3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/84202843-f381-425a-8313-9549daf1dfb8)
+        
+         also i set expire time for refresh token in for 10 days `application.properties`.
+        
+        ![application.properties3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/55c1978f-5ccd-4221-89c2-c6f6fe7e6a71) 
+   
+   - 3. Exceptions:
+         i add custom exceptions in application `NotFoundRefreshTokenException` , `RefreshTokenExpiredException` and handle by `RestAdviceController`  
+   - 4. EndPoints:
+         ![test1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/065c3fc2-06a2-4079-af24-0a0a9d82c519)
+         ![test2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/50919cd1-d1dd-4fba-a6af-ad4f4a737163)
+         ![test3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/34b59759-c17e-44a3-b5d7-1aeaaa2ad6ef)
+         ![test4](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/9f5a1bd1-1d2f-4b74-b24d-5f47af8c7dae)
+         ![test5](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ffdca736-9820-43bd-b9dd-fbbae8358b79)
+         ![test6](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/0af53e62-6c13-4b13-b457-bd31c6115b0e)
+         ![test7](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/fa4ffdec-be28-420d-8a21-09d49e5d7e62)
+         ![test8](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ec117c9f-4259-403a-8063-53385cb6be92)
+         ![test9](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ea694da3-8218-4c70-be95-332d4a706c2d)
+         ![test10](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/de4f9926-6670-4356-8dbd-abb19ea5e2de)
+         ![test11](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/8ac97383-1593-4a0e-b318-6c39e2176357)
+         ![test12](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6a80c265-2f05-4122-911a-a3fcadbd9305)
+   
+  - 5. Flow Application:
+         ![Flow Application3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/4661e46e-3cd8-4f5b-a051-b12a4717f506)     
 
+#
 
+# Conclusion
+As we conclude our exploration of Spring Security, it's with great satisfaction that we reflect on the robust and flexible security solutions it provides for Java-based applications. Securing applications is paramount, and Spring Security equips us with the tools and strategies needed to protect our software effectively. and i'm so very happy to share this , thanks.
 
 
