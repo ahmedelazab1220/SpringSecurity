@@ -164,7 +164,7 @@ Communication between client computers and web servers is done by sending HTTP R
 
 
  
-- 3. PasswordEncoder
+ - 3. PasswordEncoder
       Spring Security offers a range of password encoders to secure user passwords effectively. Let’s explore these encoders to understand their strengths and limitations.
      
      - NoOpPasswordEncoder : 
@@ -263,7 +263,7 @@ Communication between client computers and web servers is done by sending HTTP R
 
              but you can't return to login or logout page. you must restart application and web browser to go again , so i do `httpbasic` and `formLogin(form -> form.permitAll())` to allow this all.
 
-    - 5. http.build():
+   - 5. http.build():
            - Builds the HttpSecurity configuration and returns the resulting SecurityFilterChain bean.         
 
 #
@@ -396,7 +396,7 @@ Communication between client computers and web servers is done by sending HTTP R
            ![Custom Implementation UserDetialService](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f9f52278-514b-4ddb-92bf-23b4c3988dd1)
     
    - 9.  EndPoints:
-   - 
+
           - `/api/v2/auth` , `/api/v1/auth/**`: permitAll to access don't need authentication and second endpoint means any endpoint under `/api/v1/auth` permitAll. 
           - `/api/v2/auth/admin`: need to `ADMIN` Role to access.
           - `/api/v2/auth/admin/write`: need to `ADMIN_WRITE` Authority to access but don't need to `ADMIN` Role ok there are difference between them.
@@ -568,7 +568,7 @@ Communication between client computers and web servers is done by sending HTTP R
           
             The `UsernamePasswordAuthenticationToken` is a class in Spring Security that represents an authentication token for username and password-based authentication. It implements the Authentication interface, which is the core interface representing an authenticated principal once the authentication process is completed.
             
-    - 4. MySQL Database:
+  - 4. MySQL Database:
          
          - entites : `users`  , `roles` , `authorities`.
          - relations : `users_roels` , `roles_authorities` -> -*ManyToMany*-.
@@ -581,7 +581,7 @@ Communication between client computers and web servers is done by sending HTTP R
           - `security.jwt.secret-key`: refer to secret key in `jwtService` class you can change this name. also you can use the same secret-key `51f8bd5450122d34d6f895c98798923f0bcbf19285e92c477f8318272e017cbc` i'm used it. 
           - `security.jwt.expiration-time`: refer to Expiration time in `jwtService` class you can change this name also and make sure that expriration-time long. you can make `86400000`.
           
-    - 5. Custom Login By RestController:
+  - 5. Custom Login By RestController:
           
           ![Login Controller](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/13d57be8-8163-4a03-b526-7fd3c378fa23)
           
@@ -591,11 +591,11 @@ Communication between client computers and web servers is done by sending HTTP R
           - `authenticationManager.authenticate(...)` is used to authenticate the user's credentials.
           - generate Token during login.
     
-    - 6. Exceptions:
+  - 6. Exceptions:
     
           i use RestAdviceController to handle exception and Authentication Entry point in security but may be notice that i use `try catch` and `HandlerExceptionResolver` in `JwtAuthenticationFilter` why? ok i used it because when try to access to protected endpoint by Invalid Signature `Bearer token` error throw in console before enter in filter before handle by exceptionHandling , then handle by `InsufficientAuthenticationException` but this is false because suppose handle by `SignatureException` and if try to access by expire token handel also by `InsufficientAuthenticationException` to solve it i use handler exception resolver in `JwtAuthenticationFilter`.
     
-    - 7. EndPoints
+  - 7. EndPoints
           
           i use postman to make it , if you want to make it by web browser you must make `custom login page` and permit in security Configuration.
           
@@ -615,7 +615,7 @@ Communication between client computers and web servers is done by sending HTTP R
          ![test12](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/54dd6564-79a0-430d-ba37-c6ea20b26642)
          ![tesst13](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/b051b84f-acfc-494a-83f9-3546d0823f76)
     
-    - 8. Flow Application
+  - 8. Flow Application
           
          ![Flow Application2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/283fb2ad-261e-42d7-b87c-9c4565da5b3e) 
           
