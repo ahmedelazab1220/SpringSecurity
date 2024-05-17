@@ -560,9 +560,9 @@ Communication between client computers and web servers is done by sending HTTP R
             
             - 1. The filter begins by checking if there’s an “Authorization” header in the request, and if it contains a Bearer token. Requests that are not related to user login typically do not have a JWT token in their headers, so they pass through to the next filter chain without any token-related processing.
 
-               - Bearer:
-              
-                  A `Bearer Token` is a type of token used in the HTTP Authorization header `Authorization: Bearer <token>` to authenticate requests. The term "bearer" indicates that the token holder, or bearer, has access rights or permissions granted by the token.
+                  - Bearer:
+               
+                     A `Bearer Token` is a type of token used in the HTTP Authorization header `Authorization: Bearer <token>` to authenticate requests. The term "bearer" indicates that the token holder, or bearer, has access rights or permissions granted by the token.
             
             - 2. If the “Authorization” header is found and it starts with “Bearer,” indicating the presence of an access token, the filter proceeds to validate and authenticate this token.
 
@@ -572,15 +572,15 @@ Communication between client computers and web servers is done by sending HTTP R
             
             - 5. The authenticated user is then stored in the `SecurityContext`, ensuring they have access to protected resources in the application.
                
-               - SecurityContextHolder:
+                  - SecurityContextHolder:
          
-                  - Manages the security context, which holds the details of the current authentication and authorization information.
-                  - The SecurityContextHolder provides access to the SecurityContext, and the SecurityContext contains the principal (authenticated user) and their granted authorities.
-                  - We can set the authentication to Securitycontex at login and after JwtToken authenticated.
+                     - Manages the security context, which holds the details of the current authentication and authorization information.
+                     - The SecurityContextHolder provides access to the SecurityContext, and the SecurityContext contains the principal (authenticated user) and their granted authorities.
+                     - We can set the authentication to Securitycontex at login and after JwtToken authenticated.
              
-               - UsernamePasswordAuthenticationToken:
+                  - UsernamePasswordAuthenticationToken:
           
-                  - The `UsernamePasswordAuthenticationToken` is a class in Spring Security that represents an authentication token for username and password-based authentication. It implements the Authentication interface, which is the core interface representing an authenticated principal once the authentication process is completed.
+                     - The `UsernamePasswordAuthenticationToken` is a class in Spring Security that represents an authentication token for username and password-based authentication. It implements the Authentication interface, which is the core interface representing an authenticated principal once the authentication process is completed.
             
   - 4. MySQL Database:
          
