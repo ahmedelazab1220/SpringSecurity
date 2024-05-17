@@ -663,6 +663,43 @@ Communication between client computers and web servers is done by sending HTTP R
              - `private Instant expiryDate`: This field represents the expiration date and time of the refresh token. It indicates when the refresh token will no longer be valid.
              
              - `private User user`: This field represents the user associated with the refresh token. It establishes a one-to-one relationship between a user and their refresh token. i use JsonIgnore to avoid overflow during request record `user`.
+             
+             - may be ask me do must use OneToOne relation ? No , you can use OneToMany also then what is difference?
+                 - 1. One-to-One Relationship : 
+                    
+                      - In a one-to-one relationship, each client (or session) gets a unique refresh token. This means for each login or session, there is a distinct refresh token tied to it.
+                    
+                      - Use Cases:
+                         - Single Device/Session Per User: When users are expected to log in from a single device or session. Each device/session would then have its own unique refresh token.
+                         - High Security Requirements: When security is a top priority, and you want to minimize the risk of token misuse. Since each session has a unique token, if a token is compromised, only that specific session is affected.
+                         - Simplified Token Management: Easier to manage and invalidate tokens. If a user logs out, you only need to invalidate one token.
+                    
+                      - Advantages:
+
+                         - Better control and security over each session.
+                         - Easier to track and revoke specific tokens if needed.
+                    
+                      - Disadvantages:
+
+                       - Can lead to more complex token management if users need to access the application from multiple devices or sessions.
+                
+                - 2. One-to-Many Relationship : 
+                      
+                      - In a one-to-many relationship, a single user might have multiple refresh tokens, one for each device or session.
+                      
+                      - Multiple Devices/Sessions Per User: When users need to access the application from multiple devices (e.g., phone, tablet, computer) or have multiple sessions concurrently. Each device or session would have its own refresh token.
+                      
+                      - User Convenience: Provides a seamless experience for users who switch between multiple devices without requiring frequent logins.  
+
+                      - Advantages: 
+                        
+                         -  More convenient for users who use multiple devices.
+                         - Supports concurrent sessions seamlessly.
+                      
+                      - Disadvantages:
+
+                         - More complex to manage and revoke tokens. If a token is compromised, you need a mechanism to identify and invalidate the specific token without affecting others.
+                         - Requires tracking multiple tokens per user, which could be challenging from a security and management perspective.
          
          - Refresh Token Service
           
