@@ -8,6 +8,7 @@
    -  `Chapter 5` : Database Spring Security
    -  `Chapter 6` : Jwt Spring Security
    -  `Chapter 7` : Jwt And RefreshToken Spring Security
+   -  `Chapter 8` : Jwt And Logout Spring Security
 
 Welcome, everyone! In this repository, I aim to cover all essential aspects of Spring Security comprehensively. But before diving into that, let's lay down some foundational concepts.
 
@@ -728,6 +729,82 @@ Communication between client computers and web servers is done by sending HTTP R
          ![test6](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/0fab3124-0773-4006-a570-9d029cd2ebba)
          ![test7](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/61739a95-039b-4d9c-b1c1-98adab4be3f0)
    
+
+#
+
+## Chapter 7            
+
+### Agenda
+   - **Refresh Token**
+   - **Security Configuration**
+      - ***logout***  
+   - **Logout Handler**
+   - **EndPoints**   
+#
+
+   - 1. Refresh Token:
+
+        i use List of refresh Token for user because user may be log in in other device but if requirements of system don't require many refresh token you can use only one Refersh Token for each user.
+   
+   - 2. Security Configuration:
+
+        ![Security Configuration3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/efa911e5-930e-4cab-bfd7-542a801efe56)
+
+        `logout(logout -> logout.logoutSuccessUrl("/api/v1/auth/logout"))` : in this line i use custom implementation you can see in `AuthenticaitonController Class` , but i need to talk about how logout excute so let's go start.
+
+        When you include the `spring-boot-starter-security` dependency or use the `@EnableWebSecurity` annotation, Spring Security will add its logout support and by default respond both to `GET /logout` and `POST /logout`.
+
+        If you request GET /logout, then Spring Security displays a logout confirmation page. Aside from providing a valuable double-checking mechanism for the user, it also provides a simple way to provide `the needed CSRF token` to `POST /logout`. 
+                    
+        Please note that if CSRF protection is disabled in configuration, no logout confirmation page is shown to the user and the logout is performed directly.
+
+        If you request POST /logout, then it will perform the following default operations using a series of LogoutHandler:
+
+            -  Invalidate the HTTP session (`SecurityContextLogoutHandler`)
+
+            -  Clear the SecurityContextHolderStrategy (`SecurityContextLogoutHandler`)
+
+            -  Clear the SecurityContextRepository (`SecurityContextLogoutHandler`)
+              
+            -  Clean up any RememberMe authentication (`TokenRememberMeServices` / `PersistentTokenRememberMeServices`)
+              
+            -  Clear out any saved CSRF token (`CsrfLogoutHandler`)
+              
+            -  Fire a LogoutSuccessEvent (`LogoutSuccessEventPublishingLogoutHandler`) 
+
+        Once completed, then it will exercise its default LogoutSuccessHandler which redirects to /login?logout.
+
+        Customizing Logout URIs:
+
+        Since the `LogoutFilter` appears before the `AuthorizationFilter` in the filter chain, it is not necessary by default to explicitly permit the /logout endpoint. Thus, only custom logout endpoints that you create yourself generally require a permitAll configuration to be reachable.
+ 
+        For example, if you want to simply change the URI that Spring Security is matching, you can do so in the logout DSL in following way:            
+
+             -  `logout((logout) -> logout.logoutUrl("/my/logout/uri"))` : don't need to make endpoint with yourself.
+             -  `logout(logout -> logout.logoutSuccessUrl("/api/v1/auth/logout"))` : need to make endpoint with yourself.
+
+        you can add also `LogoutSuccessHandler` instead of redirecting, you may want to only return a status code. In this case, you can provide a success handler instance.
+             
+             -  `logout((logout) -> logout.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()))`   
+        
+        Since LogoutSuccessHandler is a functional interface, you can provide a custom one as a lambda.
+
+   - 3. logout Handler:
+
+        ![logoutHandler](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/a62e1e98-4d54-466c-bbb2-24632c2ac274)
+
+        logout handler : i delete refresh token from database that means revoke it. when user can access to make a new access token to continue work in application send not found token or revoked must login again. may be ask me why not prevent access token? ok , access token have short live that means if anyone have access token can't not continue in application. after expiration time don't access to applicaiton again.
+   
+   - 4. EndPoints:  
+
+        ![test1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/46b424b3-5dc4-479d-8088-73a298780cc3)
+        ![test2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/fa14cf52-a9ef-49fa-b79f-eb7ec97394d8)
+        ![test3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6a5cb405-d04e-426a-a03f-f7ad88fff7fd)
+        ![test4](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/d0a8a7ad-5db4-47fa-9f11-7012961bbdda)
+        ![test5](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/f1063a8b-6880-4744-b084-d9ba93e76a69)
+
+
+        `note` : you can add BlackListToken to store refreshToken for certain time to prevent use it in future because refresh token is still work even if delete from database and if you try to access anypoint give permission because generated from jwt also , you can generate by `UUID` to prevent this also , but in frontend send refresh token to request anything except to generate new access token not correct.
 
 #
 
