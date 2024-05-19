@@ -4,10 +4,10 @@ import com.luv2code.demo.entity.RefreshToken;
 
 public interface RefreshTokenService {
 
-	RefreshToken createRefreshToken(String username);
+	RefreshToken save(RefreshToken refreshToken);
 
 	RefreshToken findByToken(String token);
 
-	RefreshToken verifyExpiration(RefreshToken token);
+	void deleteByEntity(RefreshToken refreshToken);
 
 }

@@ -80,8 +80,9 @@ public class RestExceptionHandler {
 
 	@ExceptionHandler(RefreshTokenExpiredException.class)
 	public ErrorResponse handleRefreshTokenExpiredException(RefreshTokenExpiredException ex, WebRequest request) {
-		return new ErrorResponse(StatusCode.FORBIDDEN, "Refresh Token Is Expired!", "RefreshTokenExpiredException",
-				ex.getMessage(), request.getDescription(false).substring(4), System.currentTimeMillis());
+		return new ErrorResponse(StatusCode.FORBIDDEN, "Refresh token is expired. Please make a new login..!",
+				"RefreshTokenExpiredException", ex.getMessage(), request.getDescription(false).substring(4),
+				System.currentTimeMillis());
 	}
 
 	@ExceptionHandler(Exception.class)

@@ -19,4 +19,6 @@ public interface JwtService {
 
 	String generateToken(String username);
 
+	String generateRefreshToken(String username);
+
 }
