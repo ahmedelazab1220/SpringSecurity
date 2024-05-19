@@ -641,9 +641,7 @@ Communication between client computers and web servers is done by sending HTTP R
    - **Refresh Token**
    - **MySQL Database**
    - **Exceptions**
-   - **EndPoints**
-   - **Flow Application**
-   
+   - **EndPoints**   
 #
    
    - 1. Refresh Token:
@@ -703,18 +701,9 @@ Communication between client computers and web servers is done by sending HTTP R
          
          - Refresh Token Service
           
-           ![Refresh Token Service](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/1f49859c-f55d-4780-a011-b9eb893325a9)
+           ![generate Refresh token](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/7f54c1fc-11b3-4eda-a2fa-67fabc6e2018)
           
-           - createRefreshToken : 
-              This method is used to create a new refresh token for a user. It takes the username as input, fetches the associated user information from the UserRepository, generates a random token using UUID.randomUUID().toString(), and sets the expiration date to 10 minutes (600,000 milliseconds) from the current time. It then builds a RefreshToken object and saves it to the database using the refreshTokenRepository.save(refreshToken) method. The newly created refresh token is returned.   
-           
-           - findByToken :
-              This method is used to find a refresh token by its token value. It takes a token as input and queries the database using the refreshTokenRepository.findByToken(token) method. The result is returned as an Optional to handle the possibility of a token not being found.   
-          
-           - verifyExpiration : 
-              This method checks if a refresh token has expired. It takes a token as input and compares its expiration date with the current time (obtained through Instant.now()). If the expiration date is in the past, it means the token has expired.
-              If the token is expired, it is deleted from the database using refreshTokenRepository.delete(token), and a RuntimeException is thrown to indicate that the refresh token has expired.If the token is still valid, it is returned as-is.       
- 
+           - when user do login , i generate new `refresh token` and new `access token` and discard `old refresh token` , you must delete from database because relation between `user` and `refresh token` is OneToOne
  
 
    - 2. MySQL Database:
@@ -731,22 +720,14 @@ Communication between client computers and web servers is done by sending HTTP R
    
    - 4. EndPoints:
 
-         ![test1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/065c3fc2-06a2-4079-af24-0a0a9d82c519)
-         ![test2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/50919cd1-d1dd-4fba-a6af-ad4f4a737163)
-         ![test3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/34b59759-c17e-44a3-b5d7-1aeaaa2ad6ef)
-         ![test4](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/9f5a1bd1-1d2f-4b74-b24d-5f47af8c7dae)
-         ![test5](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ffdca736-9820-43bd-b9dd-fbbae8358b79)
-         ![test6](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/0af53e62-6c13-4b13-b457-bd31c6115b0e)
-         ![test7](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/fa4ffdec-be28-420d-8a21-09d49e5d7e62)
-         ![test8](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ec117c9f-4259-403a-8063-53385cb6be92)
-         ![test9](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/ea694da3-8218-4c70-be95-332d4a706c2d)
-         ![test10](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/de4f9926-6670-4356-8dbd-abb19ea5e2de)
-         ![test11](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/8ac97383-1593-4a0e-b318-6c39e2176357)
-         ![test12](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6a80c265-2f05-4122-911a-a3fcadbd9305)
+         ![test1](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/a01b2bcd-e716-4364-8ab1-7f52e903f2b7)
+         ![test2](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/2a9acd87-c2eb-4529-9852-c3595fad15ed)
+         ![test3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/c8b45d75-a727-43d3-9b52-2d5ef205c357)
+         ![test4](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/cc6c7a9e-955f-4c11-9ea5-ef1acf0be06b)
+         ![test5](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/6afc281f-3eec-4ce6-845d-89f88261dfbe)
+         ![test6](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/0fab3124-0773-4006-a570-9d029cd2ebba)
+         ![test7](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/61739a95-039b-4d9c-b1c1-98adab4be3f0)
    
-  - 5. Flow Application:
-
-         ![Flow Application3](https://github.com/ahmedelazab1220/SpringSecurity/assets/105994948/4661e46e-3cd8-4f5b-a051-b12a4717f506)     
 
 #
 
